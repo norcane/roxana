@@ -49,6 +49,15 @@ lazy val roxanaCore = (project in file("roxana-core"))
   )
   .enablePlugins(ScalaJSPlugin)
 
+lazy val examples = (project in file("roxana-examples"))
+  .settings(
+    name := "roxana-examples",
+    scalaJSUseMainModuleInitializer := true
+  )
+  .enablePlugins(ScalaJSPlugin)
+  .enablePlugins(WorkbenchPlugin)
+  .dependsOn(roxana).aggregate(roxana)
+
 scalacOptions in Global := Seq(
   "-deprecation",
   "-feature",
