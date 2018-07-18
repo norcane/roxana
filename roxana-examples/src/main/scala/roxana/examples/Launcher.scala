@@ -13,9 +13,9 @@
  * the License.
  */
 
-package com.roxana.examples
+package roxana.examples
 
-import com.roxana.examples.containers.todoList
+import roxana.examples.containers.todoList
 import rx._
 
 object Launcher {

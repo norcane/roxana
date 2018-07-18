@@ -13,18 +13,21 @@
  * the License.
  */
 
-package com.roxana.examples.containers
+package roxana.examples.containers
 
 import cats.Id
 import org.scalajs.dom
-import org.scalajs.dom.html.Div
 import roxana.core.Component
+import roxana.core.helpers._
+import roxana.examples.renderers
+import roxana.toolkit.forms.{rxButton, rxForm, rxInputText}
 import rx._
 import scalatags.JsDom
-import roxana.core.helpers._
-import roxana.toolkit.forms.{rxButton, rxForm, rxInputText}
 
 case class todoList()(implicit rxCtx: Ctx.Owner) extends Component[dom.html.Div] {
+
+  // import Bootstrap v4 renderers
+  import renderers.bootstrap._
 
   // --- public API
   val items: Var[List[todoList.Item]] = Var(List.empty)
@@ -87,8 +90,8 @@ case class todoList()(implicit rxCtx: Ctx.Owner) extends Component[dom.html.Div]
   }
 
   private def renderEmptyWarning() = {
-    import scalatags.JsDom.all._
     import roxana.core.implicits._
+    import scalatags.JsDom.all._
 
     val cssDisplay = items map (itemsSet => if (itemsSet.isEmpty) "block" else "none")
 
@@ -96,7 +99,6 @@ case class todoList()(implicit rxCtx: Ctx.Owner) extends Component[dom.html.Div]
   }
 
   private def removeItem(item: todoList.Item)(ev: dom.Event): Unit = {
-    println("sfsdfsd")
     items() = items.now filterNot (_.hash == item.hash)
   }
 
