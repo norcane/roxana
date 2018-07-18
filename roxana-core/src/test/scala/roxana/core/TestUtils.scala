@@ -13,22 +13,21 @@
  * the License.
  */
 
-package com.roxana.examples
+package roxana.core
 
-import com.roxana.examples.containers.todoList
 import rx._
+import utest._
 
-object Launcher {
+trait TestUtils {
 
-  import roxana.core.helpers._
+  implicit class RichVar[T](x: Var[T]) {
+    def rx: Rx[T] = x
+  }
 
-  private implicit val rxCtx: Ctx.Owner = Ctx.Owner.safe()
-
-  def main(args: Array[String]): Unit = {
-    println("roxana demo starting...")
-
-    println("rendering todoList component...")
-    renderComponent(todoList(), 'appContainer)
+  def testRx[T](rxVar: Var[T], rxResult: => T, initial: T, newValue: T): Unit = {
+    rxResult ==> initial
+    rxVar() = newValue
+    rxResult ==> newValue
   }
 
 }

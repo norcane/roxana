@@ -1,5 +1,3 @@
-package roxana
-
 /*
  * roxana :: Reactive UI component framework for Scala.js applications
  * Copyright (c) 2018 norcane
@@ -15,22 +13,14 @@ package roxana
  * the License.
  */
 
-/**
-  * Package containing code that brings integration between the ''Scala.rx'' and ''Scalatags''
-  * libraries.
-  */
-package object interop {
+package roxana
 
-  /**
-    * Import all members of this object to bring all required implicit conversions in the scope.
-    *
-    * ===Example of use===
-    * {{{
-    *   import roxana.interop.all._
-    * }}}
-    */
-  object all
-    extends RxNodeInstances
-      with RxAttrInstances
+package object core {
+
+  object helpers extends RoxanaHelpers
+
+  object implicits
+    extends RoxanaImplicits
+      with RxAttrInstances with RxNodeInstances with RxStyleInstances
 
 }

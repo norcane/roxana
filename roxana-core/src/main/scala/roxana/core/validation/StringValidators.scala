@@ -13,22 +13,11 @@
  * the License.
  */
 
-package com.roxana.examples
+package roxana.core.validation
 
-import com.roxana.examples.containers.todoList
-import rx._
+trait StringValidators extends DefaultValidators {
 
-object Launcher {
-
-  import roxana.core.helpers._
-
-  private implicit val rxCtx: Ctx.Owner = Ctx.Owner.safe()
-
-  def main(args: Array[String]): Unit = {
-    println("roxana demo starting...")
-
-    println("rendering todoList component...")
-    renderComponent(todoList(), 'appContainer)
-  }
+  val notEmpty: Validator[String, String] = input =>
+    if (input != null && input.nonEmpty) valid(input) else invalid("validator.nonEmpty")
 
 }

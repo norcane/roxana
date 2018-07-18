@@ -13,22 +13,19 @@
  * the License.
  */
 
-package com.roxana.examples
+package roxana.core.validation
 
-import com.roxana.examples.containers.todoList
-import rx._
+import simulacrum.typeclass
 
-object Launcher {
+package object textinput extends TextInputImplicits {
 
-  import roxana.core.helpers._
+  @typeclass trait TextInput[M[_]] extends ValidableInput {
 
-  private implicit val rxCtx: Ctx.Owner = Ctx.Owner.safe()
+    def extract(input: String): M[String]
 
-  def main(args: Array[String]): Unit = {
-    println("roxana demo starting...")
+    def validate[Out](input: String, validator: Validator[String, Out]): M[ValResult[Out]]
 
-    println("rendering todoList component...")
-    renderComponent(todoList(), 'appContainer)
+    def errors[Out](input: String, validator: Validator[String, Out]): Seq[ValidationError]
   }
 
 }

@@ -13,22 +13,42 @@
  * the License.
  */
 
-package com.roxana.examples
+package roxana.toolkit.forms
 
-import com.roxana.examples.containers.todoList
 import rx._
+import utest._
 
-object Launcher {
-
-  import roxana.core.helpers._
+object rxFormSuite extends TestSuite {
 
   private implicit val rxCtx: Ctx.Owner = Ctx.Owner.safe()
 
-  def main(args: Array[String]): Unit = {
-    println("roxana demo starting...")
+  val tests = Tests {
+    'testAttributes - {
+      val form = testForm
+      val rendered = form.elem
 
-    println("rendering todoList component...")
-    renderComponent(todoList(), 'appContainer)
+      // verify attributes
+      form.cls ==> rendered.classList.toString
+    }
+
+    'testInputRegistration - {
+      val form = testForm
+      form.elem // force the creation of the DOM element
+      val inputs = form.inputs.now
+
+      inputs.size ==> 1
+    }
   }
 
+  private object Data {
+    val Cls = "test-class"
+  }
+
+  private def testForm = {
+    import roxana.core.implicits._
+
+    rxForm(cls = Data.Cls) { implicit form =>
+      rxInputTextSuite.testInputText(form)
+    }
+  }
 }

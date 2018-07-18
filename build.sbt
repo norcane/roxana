@@ -1,3 +1,4 @@
+import sbt.CrossVersion
 // Scala version used
 scalaVersion in Global := "2.12.6"
 
@@ -31,7 +32,7 @@ bintrayOrganization := Some("norcane")
 bintrayRepository := "roxana"
 
 lazy val roxana = (project in file("."))
-  .dependsOn(roxanaCore).aggregate(roxanaCore)
+  .dependsOn(roxanaCore, roxanaToolkit).aggregate(roxanaCore, roxanaToolkit)
 
 lazy val roxanaCore = (project in file("roxana-core"))
   .settings(
@@ -40,7 +41,21 @@ lazy val roxanaCore = (project in file("roxana-core"))
       /// runtime dependencies
       "com.lihaoyi" %%% "scalatags" % "0.6.7",
       "com.lihaoyi" %%% "scalarx" % "0.4.0",
+      "com.github.mpilquist" %%% "simulacrum" % "0.12.0",
 
+      /// test dependencies
+      "com.lihaoyi" %%% "utest" % "0.6.4" % "test"
+    ),
+    testFrameworks += new TestFramework("utest.runner.Framework"),
+    jsEnv := new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv,
+    addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
+  )
+  .enablePlugins(ScalaJSPlugin)
+
+lazy val roxanaToolkit = (project in file("roxana-toolkit"))
+  .settings(
+    name := "roxana-toolkit",
+    libraryDependencies ++= Seq(
       /// test dependencies
       "com.lihaoyi" %%% "utest" % "0.6.4" % "test"
     ),
@@ -48,6 +63,7 @@ lazy val roxanaCore = (project in file("roxana-core"))
     jsEnv := new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv
   )
   .enablePlugins(ScalaJSPlugin)
+  .dependsOn(roxanaCore)
 
 lazy val examples = (project in file("roxana-examples"))
   .settings(
@@ -66,3 +82,9 @@ scalacOptions in Global := Seq(
   "-language:higherKinds",
   "-Ypartial-unification"
 )
+
+libraryDependencies in Global ++= Seq(
+  "com.github.mpilquist" %%% "simulacrum" % "0.12.0",
+)
+
+addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)

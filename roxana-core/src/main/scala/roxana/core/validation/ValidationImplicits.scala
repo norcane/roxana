@@ -13,22 +13,17 @@
  * the License.
  */
 
-package com.roxana.examples
+package roxana.core.validation
 
-import com.roxana.examples.containers.todoList
-import rx._
+import cats.Id
 
-object Launcher {
+trait ValidationImplicits {
 
-  import roxana.core.helpers._
-
-  private implicit val rxCtx: Ctx.Owner = Ctx.Owner.safe()
-
-  def main(args: Array[String]): Unit = {
-    println("roxana demo starting...")
-
-    println("rendering todoList component...")
-    renderComponent(todoList(), 'appContainer)
+  implicit def idSequence: Sequence[Id] = new Sequence[Id] {
+    override def toSeq[A](value: Id[A]): Seq[A] = Seq(value)
   }
 
+  implicit def optionSequence: Sequence[Option] = new Sequence[Option] {
+    override def toSeq[A](value: Option[A]): Seq[A] = value.toList
+  }
 }

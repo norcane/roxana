@@ -13,22 +13,36 @@
  * the License.
  */
 
-package com.roxana.examples
+package roxana.core
 
-import com.roxana.examples.containers.todoList
+import roxana.core.implicits._
 import rx._
+import scalatags.JsDom.all._
+import utest._
 
-object Launcher {
+object RxNodeInstancesSuite extends TestSuite with TestUtils {
 
-  import roxana.core.helpers._
+  val tests = Tests {
 
-  private implicit val rxCtx: Ctx.Owner = Ctx.Owner.safe()
+    val TextOrig = "text-orig"
+    val TextNew = "text-new"
 
-  def main(args: Array[String]): Unit = {
-    println("roxana demo starting...")
+    val text = Var(TextOrig)
 
-    println("rendering todoList component...")
-    renderComponent(todoList(), 'appContainer)
+    'rxVar - {
+      val node = span(text).render
+      testRx(text, node.textContent, TextOrig, TextNew)
+    }
+
+    'rxRx - {
+      val node = span(text.rx).render
+      testRx(text, node.textContent, TextOrig, TextNew)
+    }
+
+    'rxDynamic - {
+      val node = span(Rx(text())).render
+      testRx(text, node.textContent, TextOrig, TextNew)
+    }
   }
 
 }

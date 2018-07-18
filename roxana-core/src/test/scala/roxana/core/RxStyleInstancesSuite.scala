@@ -13,22 +13,36 @@
  * the License.
  */
 
-package com.roxana.examples
+package roxana.core
 
-import com.roxana.examples.containers.todoList
+import roxana.core.implicits._
 import rx._
+import scalatags.JsDom.all._
+import utest._
 
-object Launcher {
+object RxStyleInstancesSuite extends TestSuite with TestUtils {
 
-  import roxana.core.helpers._
+  val tests = Tests {
 
-  private implicit val rxCtx: Ctx.Owner = Ctx.Owner.safe()
+    val ColorOld = "red"
+    val ColorNew = "green"
 
-  def main(args: Array[String]): Unit = {
-    println("roxana demo starting...")
+    val colorRx = Var("red")
 
-    println("rendering todoList component...")
-    renderComponent(todoList(), 'appContainer)
+    'rxVar - {
+      val node = span(color := colorRx).render
+      testRx(colorRx, node.style.color, ColorOld, ColorNew)
+    }
+
+    'rxRx - {
+      val node = span(color := colorRx.rx).render
+      testRx(colorRx, node.style.color, ColorOld, ColorNew)
+    }
+
+    'rxDynamic - {
+      val node = span(color := Rx(colorRx())).render
+      testRx(colorRx, node.style.color, ColorOld, ColorNew)
+    }
   }
 
 }
