@@ -17,6 +17,7 @@ package roxana.examples.containers
 
 import cats.Id
 import org.scalajs.dom
+import org.scalajs.dom.html.LI
 import roxana.core.Component
 import roxana.core.helpers._
 import roxana.examples.renderers
@@ -41,7 +42,7 @@ case class todoList()(implicit rxCtx: Ctx.Owner) extends Component[dom.html.Div]
     import roxana.core.implicits._
     import scalatags.JsDom.all._
 
-    val todoItems = Rx(items().map(renderItem(_).render))
+    val todoItems: Rx.Dynamic[List[LI]] = Rx(items().map(renderItem(_).render))
 
     div(cls := "row justify-content-md-center",
       div(cls := "card card-body bg-light col-md-10",

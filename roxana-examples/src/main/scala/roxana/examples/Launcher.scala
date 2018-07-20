@@ -15,7 +15,10 @@
 
 package roxana.examples
 
+import org.scalajs.dom
+import roxana.core.Component
 import roxana.examples.containers.todoList
+import roxana.toolkit.forms.{rxButton, rxSelectMenu}
 import rx._
 
 object Launcher {
@@ -27,8 +30,22 @@ object Launcher {
   def main(args: Array[String]): Unit = {
     println("roxana demo starting...")
 
-    println("rendering todoList component...")
-    renderComponent(todoList(), 'appContainer)
+    val components: Seq[rxSelectMenu.Item[() => Component[_ <: dom.Element]]] = Seq(
+      rxSelectMenu.Item("todoList", () => todoList()),
+      rxSelectMenu.Item("button", () => rxButton(label = "test"))
+    )
+
+    val selectedComponent = Var(components.head)
+
+    val componentsSelect = rxSelectMenu[() => Component[_ <: dom.Element]](
+      components, onChange = item => selectedComponent() = item)
+
+    println("rendering component select menu")
+    renderComponent(componentsSelect, 'selectContainer)
+
+    selectedComponent.trigger {
+      renderComponent(selectedComponent.now.value(), 'componentContainer)
+    }
   }
 
 }
