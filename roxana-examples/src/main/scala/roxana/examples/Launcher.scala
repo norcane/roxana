@@ -17,6 +17,7 @@ package roxana.examples
 
 import org.scalajs.dom
 import roxana.core.Component
+import roxana.core.renderers.Renderer
 import roxana.examples.containers.todoList
 import roxana.toolkit.forms.{rxButton, rxSelectMenu}
 import rx._
@@ -26,6 +27,8 @@ object Launcher {
   import roxana.core.helpers._
 
   private implicit val rxCtx: Ctx.Owner = Ctx.Owner.safe()
+
+  implicit val renderer: Renderer =  roxana.examples.renderers.bootstrap4
 
   def main(args: Array[String]): Unit = {
     println("roxana demo starting...")

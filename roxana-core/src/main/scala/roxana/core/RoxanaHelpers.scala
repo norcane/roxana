@@ -16,18 +16,20 @@
 package roxana.core
 
 import org.scalajs.dom
+import roxana.core.renderers.{Renderer, Renderers}
 import rx._
 
 import scala.reflect.ClassTag
 
 trait RoxanaHelpers {
 
-  def renderComponent[T <: dom.Element](component: Component[T], elementId: Symbol): Unit = {
+  def renderComponent[T <: dom.Element](component: Component[T], elementId: Symbol)
+                                       (implicit renderer: Renderer = Renderers.default): Unit = {
     val container = dom.document.getElementById(elementId.name)
     require(container != null, s"Cannot find element for ID '${elementId.name}'")
 
     container.innerHTML = ""
-    container.appendChild(component.elem)
+    container.appendChild(renderer(component).now)
   }
 
 

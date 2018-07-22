@@ -15,33 +15,51 @@
 
 package roxana.examples.renderers
 
-import roxana.core.Renderer
-import roxana.toolkit.forms.{rxButton, rxInputText}
+import org.scalajs.dom
+import org.scalajs.dom.html.Select
+import roxana.core.renderers.Renderer
+import roxana.toolkit.forms.{rxButton, rxInputText, rxSelectMenu}
 import rx.{Ctx, Rx}
 
-trait BootstrapV4Renderers {
+/**
+  * ''Bootstrap 4'' renderers for the ''roxana'' toolkit components.
+  */
+object BootstrapV4Renderers {
 
-  implicit def rxButtonRenderer(implicit rxCtx: Ctx.Owner): Renderer[rxButton] =
-    (component: rxButton) => {
-      val elem = component.elem
+  def all(implicit rxCtx: Ctx.Owner): Renderer = {
+    case c: rxButton => rxButtonRenderer(c)
+    case c: rxInputText[_] => rxInputTextRenderer(c)
+    case c: rxSelectMenu[_] => rxSelectMenuRenderer(c)
+  }
 
-      elem.classList.add("btn")
-      Rx(elem)
+  def rxButtonRenderer(component: rxButton)(implicit rxCtx: Ctx.Owner): Rx[dom.Element] = {
+    val elem = component.elem
+
+    elem.classList.add("btn")
+    Rx(elem)
+  }
+
+  def rxInputTextRenderer[M[_]](component: rxInputText[M])
+                               (implicit rxCtx: Ctx.Owner): Rx[dom.Element] = {
+    val Valid = "is-valid"
+    val Invalid = "is-invalid"
+    val elem = component.elem
+    val validCls = for (valid <- component.valid) yield if (valid) Valid else Invalid
+
+    Rx {
+      Seq(Valid, Invalid) foreach elem.classList.remove
+      elem.classList.add("form-control")
+      elem.classList.add(validCls())
+      elem
     }
+  }
 
-  implicit def rxInputTextRenderer[M[_]](implicit rxCtx: Ctx.Owner): Renderer[rxInputText[M]] =
-    (component: rxInputText[M]) => {
-      val Valid = "is-valid"
-      val Invalid = "is-invalid"
-      val elem = component.elem
-      val validCls = for (valid <- component.valid) yield if (valid) Valid else Invalid
+  def rxSelectMenuRenderer[T](component: rxSelectMenu[T])
+                             (implicit rxCtx: Ctx.Owner): Rx.Dynamic[Select] = {
+    val elem = component.elem
 
-      Rx {
-        Seq(Valid, Invalid) foreach elem.classList.remove
-        elem.classList.add("form-control")
-        elem.classList.add(validCls())
-        elem
-      }
-    }
+    elem.classList.add("custom-select")
+    Rx(elem)
+  }
 
 }

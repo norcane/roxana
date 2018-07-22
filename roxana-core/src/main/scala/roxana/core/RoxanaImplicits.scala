@@ -17,6 +17,7 @@ package roxana.core
 
 import org.scalajs.dom
 import org.scalajs.dom.Element
+import roxana.core.renderers.{Renderer, Renderers}
 import rx.{Ctx, Rx}
 import scalatags.JsDom.all.Modifier
 
@@ -24,22 +25,22 @@ trait RoxanaImplicits {
 
   implicit class bindComp[T <: Component[_ <: dom.Element]](c: T)
                                                            (implicit rxCtx: Ctx.Owner,
-                                                            renderer: Renderer[T] = null)
+                                                            renderer: Renderer = Renderers.default)
     extends Modifier with RxNodeInstances {
 
 
     override def applyTo(t: Element): Unit = {
-      if (renderer != null) RxElementBinding(renderer.render(c)).applyTo(t) else t.appendChild(c.elem)
+      RxElementBinding(renderer(c)).applyTo(t)
     }
   }
 
   implicit class bindRxComp[T <: Component[_ <: dom.Element]](rx: Rx[T])
                                                              (implicit rxCtx: Ctx.Owner,
-                                                              renderer: Renderer[T] = null)
+                                                              renderer: Renderer = Renderers.default)
     extends Modifier with RxNodeInstances {
 
     private def rendered: Rx[dom.Element] =
-      if (renderer != null) rx.flatMap(renderer.render) else rx.map(_.elem)
+      rx.flatMap(renderer)
 
     override def applyTo(t: Element): Unit = RxElementBinding(rendered).applyTo(t)
   }

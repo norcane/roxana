@@ -19,7 +19,6 @@ import org.scalajs.dom
 import rx.Rx
 import scalatags.JsDom.{Modifier, TypedTag}
 import scalatags.generic.{Attr, AttrPair, AttrValue}
-import simulacrum.typeclass
 
 trait Component[T <: dom.Element] {
 
@@ -51,8 +50,4 @@ trait Validable {
 
 trait Resettable {
   def reset(): Unit
-}
-
-@typeclass trait Renderer[T <: Component[_]] {
-  def render(component: T): Rx[dom.Element]
 }

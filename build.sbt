@@ -80,11 +80,11 @@ scalacOptions in Global := Seq(
   "-unchecked",
   "-language:implicitConversions",
   "-language:higherKinds",
-  "-Ypartial-unification"
-)
-
-libraryDependencies in Global ++= Seq(
-  "com.github.mpilquist" %%% "simulacrum" % "0.12.0",
+  "-Ypartial-unification",
+  "-Ywarn-unused:imports",
 )
 
 addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
+
+// Aliases
+addCommandAlias("runExamples", ";project examples;~fastOptJS;project roxana")

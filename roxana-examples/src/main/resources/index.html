@@ -7,15 +7,32 @@
   <link rel="stylesheet"
         href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
+        crossorigin="anonymous" />
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-<section id="selectContainer" class="container">
+<header class="clearfix">
+  <h1 class="float-left">roxana</h1>
+  <div class="float-right">RX components showcase library</div>
+</header>
+<div class="container">
+  <div class="row justify-content-md-center mt-5">
+    <form class="form-inline">
+      <label class="mr-sm-2">Select demo component to show:</label>
+      <section id="selectContainer" class="">
+        loading component...
+      </section>
+    </form>
+  </div>
+</div>
+
+<section id="componentContainer" class="container mt-5 mb-5">
   loading component...
 </section>
-<section id="componentContainer" class="container" style="margin-top: 50px">
-  loading component...
-</section>
+
+<footer>
+  Copyright &copy; 2018 norcane
+</footer>
 
 <script type="text/javascript" src="../roxana-examples-fastopt.js"></script>
 <script type="text/javascript" src="/workbench.js"></script>
