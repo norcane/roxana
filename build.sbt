@@ -32,11 +32,8 @@ bintrayOrganization := Some("norcane")
 bintrayRepository := "roxana"
 
 lazy val roxana = (project in file("."))
-  .dependsOn(roxanaCore, roxanaToolkit).aggregate(roxanaCore, roxanaToolkit)
-
-lazy val roxanaCore = (project in file("roxana-core"))
   .settings(
-    name := "roxana-core",
+    name := "roxana",
     libraryDependencies ++= Seq(
       /// runtime dependencies
       "com.lihaoyi" %%% "scalatags" % "0.6.7",
@@ -51,19 +48,6 @@ lazy val roxanaCore = (project in file("roxana-core"))
     addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
   )
   .enablePlugins(ScalaJSPlugin)
-
-lazy val roxanaToolkit = (project in file("roxana-toolkit"))
-  .settings(
-    name := "roxana-toolkit",
-    libraryDependencies ++= Seq(
-      /// test dependencies
-      "com.lihaoyi" %%% "utest" % "0.6.4" % "test"
-    ),
-    testFrameworks += new TestFramework("utest.runner.Framework"),
-    jsEnv := new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv
-  )
-  .enablePlugins(ScalaJSPlugin)
-  .dependsOn(roxanaCore)
 
 lazy val examples = (project in file("roxana-examples"))
   .settings(
@@ -83,8 +67,6 @@ scalacOptions in Global := Seq(
   "-Ypartial-unification",
   "-Ywarn-unused:imports",
 )
-
-addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
 
 // Aliases
 addCommandAlias("runExamples", ";project examples;~fastOptJS;project roxana")

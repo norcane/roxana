@@ -15,7 +15,6 @@
 
 package roxana.toolkit.forms
 
-
 import org.scalajs.dom
 import roxana.core.{Component, Resettable, Validable}
 import rx._
