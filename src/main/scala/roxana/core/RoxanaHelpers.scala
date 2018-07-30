@@ -23,10 +23,10 @@ import scala.reflect.ClassTag
 
 trait RoxanaHelpers {
 
-  def renderComponent[T <: dom.Element](component: Component[T], elementId: Symbol)
+  def renderComponent[T <: dom.Element](component: Component[T], elementId: String)
                                        (implicit renderer: Renderer = Renderers.default): Unit = {
-    val container = dom.document.getElementById(elementId.name)
-    require(container != null, s"Cannot find element for ID '${elementId.name}'")
+    val container = dom.document.getElementById(elementId)
+    require(container != null, s"Cannot find element for ID '$elementId'")
 
     container.innerHTML = ""
     container.appendChild(renderer(component).now)

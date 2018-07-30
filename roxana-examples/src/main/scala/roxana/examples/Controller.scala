@@ -16,16 +16,12 @@
 package roxana.examples
 
 import roxana.examples.screens.DemosScreen
-import roxana.routing.Screen
+import roxana.routing.ClientController
 import rx._
 
-import scala.reflect.ClassTag
-
-// FIXME decompose the common code to base trait
-object Controller {
+object Controller extends ClientController {
 
   private implicit val rxCtx: Ctx.Owner = Ctx.Owner.safe()
-  private var screen: Screen = _
 
   def home(): Unit = Router.routeTo(Routes.examples())
 
@@ -35,17 +31,6 @@ object Controller {
 
   def example(demoName: String): Unit = withScreen(new DemosScreen()) { screen =>
     screen.demoName() = Some(demoName)
-  }
-
-  protected def withScreen[T <: Screen : ClassTag](screen: => T)(fn: T => Unit): Unit = {
-    import roxana.core.helpers._
-    val currScreen = screen match {
-      case sc: T if implicitly[ClassTag[T]].runtimeClass.isInstance(sc) => sc
-      case _ => screen
-    }
-    fn(currScreen)
-    renderComponent(currScreen, 'screenContainer)
-    this.screen = currScreen
   }
 
 }
