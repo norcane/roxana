@@ -50,6 +50,32 @@ header > div {
     color: #BDBDBD;
 }
 
+header .description {
+    margin-right: 20px;
+}
+
+header ul.icons {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+}
+
+header ul.icons > li {
+    list-style: none;
+    font-size: 30px;
+    margin-left: 20px;
+}
+
+header ul.icons > li a,
+header ul.icons > li a:visited {
+    color: #BDBDBD;
+    transition: color 200ms ease;
+}
+
+header ul.icons > li a:hover {
+    color: #FF8F00;
+}
+
 footer {
     /* Appearance */
     color: #9E9E9E;
