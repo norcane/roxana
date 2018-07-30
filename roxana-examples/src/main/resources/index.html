@@ -1,3 +1,17 @@
+<!--
+  roxana :: Reactive UI component framework for Scala.js applications
+  Copyright (c) 2018 norcane
+  ---
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+  in compliance with the License. You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software distributed under the License
+  is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+  or implied. See the License for the specific language governing permissions and limitations under
+  the License.
+-->
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,28 +21,17 @@
   <link rel="stylesheet"
         href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous" />
-  <link rel="stylesheet" href="css/style.css" />
+        crossorigin="anonymous"/>
+  <link rel="stylesheet" href="css/style.css"/>
 </head>
 <body>
 <header class="clearfix">
-  <h1 class="float-left">roxana</h1>
+  <h1 class="float-left main-heading"><a href="#">roxana</a></h1>
   <div class="float-right">RX components showcase library</div>
 </header>
-<div class="container">
-  <div class="row justify-content-md-center mt-5">
-    <form class="form-inline">
-      <label class="mr-sm-2">Select demo component to show:</label>
-      <section id="selectContainer" class="">
-        loading component...
-      </section>
-    </form>
-  </div>
+<div id="screenContainer">
+  loading application...
 </div>
-
-<section id="componentContainer" class="container mt-5 mb-5">
-  loading component...
-</section>
 
 <footer>
   Copyright &copy; 2018 norcane

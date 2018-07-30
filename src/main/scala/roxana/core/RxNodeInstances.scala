@@ -22,6 +22,7 @@ import org.scalajs.dom.Element
 import org.scalajs.dom.ext._
 import org.scalajs.dom.raw.{Comment, Node}
 import rx._
+import scalatags.JsDom.TypedTag
 import scalatags.JsDom.all.{Frag, Modifier}
 
 import scala.collection.immutable
@@ -41,6 +42,20 @@ trait RxNodeInstances {
     }
 
     def applyTo(t: Element): Unit = t.appendChild(render)
+  }
+
+  implicit class RxTypedTagBinding[T <: dom.Element](rx: Rx[TypedTag[T]])
+                                                    (implicit ctx: Ctx.Owner) extends Modifier {
+    def applyTo(container: Element): Unit = {
+      val atomicReference = new AtomicReference(rx.map(_.render).now)
+      container.appendChild(atomicReference.get())
+      rx.triggerLater {
+        val current = rx.map(_.render).now
+        val previous = atomicReference.getAndSet(current)
+        container.replaceChild(current, previous)
+        ()
+      }
+    }
   }
 
   implicit class RxElementBinding[T <: dom.Element](rx: Rx[T])

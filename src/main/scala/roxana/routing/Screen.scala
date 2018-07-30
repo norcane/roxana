@@ -13,20 +13,9 @@
  * the License.
  */
 
-package roxana.examples
+package roxana.routing
 
-import roxana.core.renderers.Renderer
+import org.scalajs.dom
+import roxana.core.Component
 
-/**
-  * ''Scala.js'' bootstrap code for the Roxana example project.
-  */
-object Launcher {
-
-  implicit val renderer: Renderer = roxana.examples.renderers.bootstrap4
-
-  def main(args: Array[String]): Unit = {
-    println(".: Welcome to the Roxana example project :.")
-    Router.init()
-  }
-
-}
+trait Screen extends Component[dom.html.Div]

@@ -15,18 +15,18 @@
 
 package roxana.examples
 
-import roxana.core.renderers.Renderer
+import roxana.routing.{HashBangRouter, StaticRoutes}
 
-/**
-  * ''Scala.js'' bootstrap code for the Roxana example project.
-  */
-object Launcher {
+object Router extends HashBangRouter {
+  override val routes: StaticRoutes = Routes
+}
 
-  implicit val renderer: Renderer = roxana.examples.renderers.bootstrap4
+//noinspection TypeAnnotation
+object Routes extends StaticRoutes {
 
-  def main(args: Array[String]): Unit = {
-    println(".: Welcome to the Roxana example project :.")
-    Router.init()
-  }
+  val home = route(root) to Controller.home
+  val examples = route(root / "examples") to Controller.examples
+  val example = route(root / "examples" / *) to Controller.example
 
 }
+

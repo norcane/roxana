@@ -1,18 +1,35 @@
+/*
+ * roxana :: Reactive UI component framework for Scala.js applications
+ * Copyright (c) 2018 norcane
+ * ---
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ */
 @import url('https://fonts.googleapis.com/css?family=Indie+Flower');
 
 h1 {
+    /* Positioning */
     margin: 0;
     padding: 0;
 }
 
 header {
-    background: #000000;
-    color: #FFFFFF;
-    border-bottom: 1px #FF8F00 solid;
-
+    /* Positioning */
     padding: 0 20px;
     line-height: 60px;
     height: 60px;
+
+    /* Appearance */
+    background: #000000;
+    color: #FFFFFF;
+    border-bottom: 1px #FF8F00 solid;
 }
 
 header > h1 {
@@ -21,7 +38,15 @@ header > h1 {
     font-size: 50px;
 }
 
+header > h1 > a,
+header > h1 > a:hover {
+    /* Appearance */
+    color: inherit;
+    text-decoration: none;
+}
+
 header > div {
+    /* Appearance */
     color: #BDBDBD;
 }
 
@@ -32,4 +57,41 @@ footer {
 
     /* Positioning */
     text-align: center;
+    margin: 10px 0;
+}
+
+.nav.left-menu > h2 {
+    /* Positioning */
+    padding: 0 1rem;
+
+    /* Appearance */
+    font-size: 1.2em;
+    text-align: left;
+}
+
+.nav.left-menu li {
+    /* Appearance */
+    border-right: 2px #EEEEEE solid;
+    transition: border-right-color 200ms ease;
+}
+
+.nav.left-menu li a {
+    /* Appearance */
+    transition: color 200ms ease;
+}
+
+.nav.left-menu li:hover {
+    /* Positioning */
+    border-right: 2px #FF8F00 solid;
+}
+
+.nav.left-menu li:hover a {
+    /* Appearance */
+    color: #FF8F00;
+}
+
+.nav.left-menu li.current {
+    /* Appearance */
+    font-weight: bold;
+    border-right: 2px #FF8F00 solid;
 }

@@ -15,10 +15,13 @@
 
 package roxana.core
 
+import java.util.Objects
+
 import org.scalajs.dom
 import org.scalajs.dom.Element
 import roxana.core.renderers.{Renderer, Renderers}
 import rx.{Ctx, Rx}
+import scalatags.JsDom.Frag
 import scalatags.JsDom.all.Modifier
 
 trait RoxanaImplicits {
@@ -43,6 +46,30 @@ trait RoxanaImplicits {
       rx.flatMap(renderer)
 
     override def applyTo(t: Element): Unit = RxElementBinding(rendered).applyTo(t)
+  }
+
+  implicit class IterableFrag[A](xs: Iterable[A])(implicit ev: A => Frag) extends Frag {
+    Objects.requireNonNull(xs)
+
+    def applyTo(t: dom.Element): Unit = xs.foreach(_.applyTo(t))
+
+    def render: dom.Node = {
+      val frag = org.scalajs.dom.document.createDocumentFragment()
+      xs.map(_.render).foreach(frag.appendChild)
+      frag
+    }
+  }
+
+  // FIXME rework this to use the renderer
+  /*implicit*/ class IterableComponent[T <: dom.Element](cs: Iterable[Component[T]])
+                                                        (implicit rxCtx: Ctx.Owner) extends Frag {
+    override def render: dom.Node = {
+      val frag = org.scalajs.dom.document.createDocumentFragment()
+      cs.map(_.elem).foreach(frag.appendChild)
+      frag
+    }
+
+    override def applyTo(t: Element): Unit = cs.foreach(_.applyTo(t))
   }
 
   implicit class BindableComponent[T <: Component[_]](component: T) {
