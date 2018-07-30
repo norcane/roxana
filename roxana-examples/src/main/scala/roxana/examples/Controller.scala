@@ -15,7 +15,7 @@
 
 package roxana.examples
 
-import roxana.examples.screens.DemosScreen
+import roxana.examples.screens.ExamplesScreen
 import roxana.routing.ClientController
 import rx._
 
@@ -25,12 +25,12 @@ object Controller extends ClientController {
 
   def home(): Unit = Router.routeTo(Routes.examples())
 
-  def examples(): Unit = withScreen(new DemosScreen()) { screen =>
-    screen.demoName() = None
+  def examples(): Unit = withScreen(new ExamplesScreen()) { screen =>
+    screen.exampleName() = None
   }
 
-  def example(demoName: String): Unit = withScreen(new DemosScreen()) { screen =>
-    screen.demoName() = Some(demoName)
+  def example(demoName: String): Unit = withScreen(new ExamplesScreen()) { screen =>
+    screen.exampleName() = Some(demoName)
   }
 
 }

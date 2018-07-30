@@ -25,13 +25,14 @@ import roxana.toolkit.forms.rxLink
 import rx._
 import scalatags.JsDom
 
-class DemosScreen(implicit rxCtx: Ctx.Owner) extends Screen {
+class ExamplesScreen(implicit rxCtx: Ctx.Owner) extends Screen {
 
-  val demoName: Var[Option[String]] = Var(None)
-  val demos: Map[String, () => Component[_ <: dom.Element]] = Map(
-    "todoList" -> (() => todoList()),
+  val exampleName: Var[Option[String]] = Var(None)
+  val examples: Map[String, (String, () => Component[_ <: dom.Element])] = Map(
+    "todoList" -> ("To-Do List", () => todoList()),
   )
-  private val demo: Rx[Option[Component[_ <: dom.Element]]] = Rx(demoName().map(demos(_).apply()))
+  private val example: Rx[Option[Component[_ <: dom.Element]]] =
+    Rx(exampleName().map(examples(_)._2.apply()))
 
   override protected def buildTag: JsDom.TypedTag[Div] = {
     import roxana.core.implicits._
@@ -40,16 +41,16 @@ class DemosScreen(implicit rxCtx: Ctx.Owner) extends Screen {
     div(cls := "container mt-5 mb-5",
       div(cls := "row",
         div(cls := "col-md-3", renderMenu),
-        div(cls := "col-md-9 mt-5", renderDemo)
+        div(cls := "col-md-9 mt-5", renderExample)
       )
     )
 
   }
 
-  private def renderDemo = Rx {
+  private def renderExample = Rx {
     import scalatags.JsDom.all._
 
-    demo() match {
+    example() match {
       case Some(comp) => div(comp.elem)
       case None => div(
         """
@@ -64,12 +65,12 @@ class DemosScreen(implicit rxCtx: Ctx.Owner) extends Screen {
     import scalatags.JsDom.all._
 
     def linkCls(name: String): String =
-      "nav-item " + demoName().filter(_ == name).map(_ => "current").getOrElse("")
+      "nav-item " + exampleName().filter(_ == name).map(_ => "current").getOrElse("")
 
     ul(cls := "nav flex-column left-menu",
       h2("Available examples"),
-      for ((dName, _) <- demos) yield li(cls := linkCls(dName),
-        rxLink(dName, _ => Router.routeTo(Routes.example(dName)), cls = "nav-link"))
+      for ((eKey, (eName, _)) <- examples) yield li(cls := linkCls(eKey),
+        rxLink(eName, _ => Router.routeTo(Routes.example(eKey)), cls = "nav-link"))
     )
   }
 }

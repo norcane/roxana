@@ -18,4 +18,10 @@ package roxana.routing
 import org.scalajs.dom
 import roxana.core.Component
 
+/**
+  * ''Screen'' represents a ''container'' component that is rendered for the given ''client router''
+  * path. The screen is the dynamic part of the web application or web page that changes when the
+  * route changes, the other parts of the page that doesn't change should be rendered by the used
+  * static HTML template.
+  */
 trait Screen extends Component[dom.html.Div]
