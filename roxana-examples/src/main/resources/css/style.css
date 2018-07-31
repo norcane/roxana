@@ -13,6 +13,7 @@
  * the License.
  */
 @import url('https://fonts.googleapis.com/css?family=Indie+Flower');
+@import url('loader.css');
 
 h1 {
     /* Positioning */
@@ -120,4 +121,26 @@ footer {
     /* Appearance */
     font-weight: bold;
     border-right: 2px #FF8F00 solid;
+}
+
+#loading-overlay {
+    display: none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 100000;
+
+    background: #FFFFFF;
+}
+
+#loading-overlay.displayed {
+    display: block;
+}
+
+#loading-overlay .loader-container {
+    position:relative;
+    top: 50%;
+    margin-top: -37px;
 }

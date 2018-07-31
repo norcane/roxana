@@ -15,29 +15,18 @@
 
 package roxana.examples
 
-import roxana.examples.screens.ExamplesScreen
-import roxana.routing.{ClientController, Screen}
-import rx._
+import org.scalajs.dom
 
-import scala.reflect.ClassTag
+object LoadingOverlay {
 
-object Controller extends ClientController {
+  private val CssClass = "displayed"
+  private val overlay = dom.document.getElementById("loading-overlay")
 
-  private implicit val rxCtx: Ctx.Owner = Ctx.Owner.safe()
-
-  def home(): Unit = Router.routeTo(Routes.examples())
-
-  def examples(): Unit = withScreen(new ExamplesScreen()) { screen =>
-    screen.exampleName() = None
+  def show(): Unit = {
+    overlay.classList.add(CssClass)
   }
 
-  def example(demoName: String): Unit = withScreen(new ExamplesScreen()) { screen =>
-    screen.exampleName() = Some(demoName)
+  def hide(): Unit = {
+    overlay.classList.remove(CssClass)
   }
-
-  override protected def withScreen[T <: Screen : ClassTag](screen: => T)(fn: T => Unit): Unit = {
-    super.withScreen(screen)(fn)
-    LoadingOverlay.hide()
-  }
-
 }
