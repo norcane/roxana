@@ -19,14 +19,17 @@ import org.scalajs.dom
 
 object LoadingOverlay {
 
-  private val CssClass = "displayed"
+  private val VisibleCls = "visible"
+  private val HiddenCls = "hidden"
   private val overlay = dom.document.getElementById("loading-overlay")
 
   def show(): Unit = {
-    overlay.classList.add(CssClass)
+    overlay.classList.add(VisibleCls)
+    overlay.classList.remove(HiddenCls)
   }
 
   def hide(): Unit = {
-    overlay.classList.remove(CssClass)
+    overlay.classList.add(HiddenCls)
+    overlay.classList.remove(VisibleCls)
   }
 }
