@@ -16,7 +16,7 @@
 package roxana.toolkit.forms
 
 import org.scalajs.dom
-import roxana.core.{Component, Resettable, Validable}
+import roxana.core.{Component, Resettable, RoxanaContext, Validable}
 import rx._
 import scalatags.JsDom
 import scalatags.JsDom.Modifier
@@ -26,8 +26,10 @@ case class rxForm(cls: String = "",
                   onSubmit: rxForm => Unit = _ => (),
                   modifiers: Seq[Modifier] = Seq.empty)
                  (formContent: rxForm => Modifier)
-                 (implicit rxCtx: Ctx.Owner)
+                 (implicit rxCtx: RoxanaContext)
   extends Component[dom.html.Form] with Resettable {
+
+  import rxCtx._
 
   // --- public API
   val inputs: Var[Seq[FormInput]] = Var(Seq.empty)
@@ -70,7 +72,7 @@ object rxForm {
 
   import scalatags.JsDom.all._
 
-  def empty(implicit rxCtx: Ctx.Owner): rxForm = rxForm()(_ => div())
+  def empty(implicit rxCtx: RoxanaContext): rxForm = rxForm()(_ => div())
 }
 
 trait FormInput extends Validable with Resettable

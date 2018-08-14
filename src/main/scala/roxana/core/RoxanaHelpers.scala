@@ -16,7 +16,6 @@
 package roxana.core
 
 import org.scalajs.dom
-import roxana.core.renderers.{Renderer, Renderers}
 import rx._
 
 import scala.reflect.ClassTag
@@ -24,7 +23,9 @@ import scala.reflect.ClassTag
 trait RoxanaHelpers {
 
   def renderComponent[T <: dom.Element](component: Component[T], elementId: String)
-                                       (implicit renderer: Renderer = Renderers.default): Unit = {
+                                       (implicit rxCtx: RoxanaContext): Unit = {
+    import rxCtx.renderer
+
     val container = dom.document.getElementById(elementId)
     require(container != null, s"Cannot find element for ID '$elementId'")
 

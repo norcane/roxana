@@ -18,18 +18,17 @@ package roxana.examples.containers
 import cats.Id
 import org.scalajs.dom
 import org.scalajs.dom.html.LI
-import roxana.core.Component
 import roxana.core.helpers._
-import roxana.core.renderers.Renderer
+import roxana.core.{Component, RoxanaContext}
 import roxana.toolkit.forms.{rxButton, rxForm, rxInputText}
 import rx._
 import scalatags.JsDom
 
-case class todoList()(implicit rxCtx: Ctx.Owner)
+case class todoList()(implicit rxCtx: RoxanaContext)
   extends Component[dom.html.Div] {
 
-  // since this container is designed for Bootstrap, we'll use it for all children components
-  implicit val renderer: Renderer = roxana.examples.renderers.bootstrap4
+  // import implicit stuff from Roxana context
+  import rxCtx._
 
   // --- public API
   val items: Var[List[todoList.Item]] = Var(List.empty)

@@ -45,7 +45,11 @@ trait RxNodeInstances {
   }
 
   implicit class RxTypedTagBinding[T <: dom.Element](rx: Rx[TypedTag[T]])
-                                                    (implicit ctx: Ctx.Owner) extends Modifier {
+                                                    (implicit rxCtx: RoxanaContext)
+    extends Modifier {
+
+    import rxCtx._
+
     def applyTo(container: Element): Unit = {
       val atomicReference = new AtomicReference(rx.map(_.render).now)
       container.appendChild(atomicReference.get())
@@ -59,7 +63,10 @@ trait RxNodeInstances {
   }
 
   implicit class RxElementBinding[T <: dom.Element](rx: Rx[T])
-                                                   (implicit ctx: Ctx.Owner) extends Modifier {
+                                                   (implicit rxCtx: RoxanaContext) extends Modifier {
+
+    import rxCtx._
+
     def applyTo(container: Element): Unit = {
       val atomicReference = new AtomicReference(rx.now)
       container.appendChild(atomicReference.get())

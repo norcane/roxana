@@ -17,15 +17,11 @@ package roxana.examples.containers
 
 import cats.Id
 import org.scalajs.dom
-import roxana.core.Component
-import roxana.core.renderers.Renderer
+import roxana.core.{Component, RoxanaContext}
 import roxana.toolkit.forms.{rxForm, rxInputText}
-import rx.Ctx
 import scalatags.JsDom
 
-case class validationsDemo()(implicit rxCtx: Ctx.Owner) extends Component[dom.html.Div] {
-
-  implicit val renderer: Renderer = roxana.examples.renderers.bootstrap4
+case class validationsDemo()(implicit rxCtx: RoxanaContext) extends Component[dom.html.Div] {
 
   override protected def buildTag: JsDom.TypedTag[dom.html.Div] = {
     import roxana.core.implicits._
@@ -40,8 +36,7 @@ case class validationsDemo()(implicit rxCtx: Ctx.Owner) extends Component[dom.ht
             div(cls := "col-md-4",
               rxInputText[Id](id = "text-input-1",
                 modifiers = Seq(autocomplete := "off"))
-            ),
-            div(cls := "invalid-feedback", "fuck off")
+            )
           )
         }
       ),

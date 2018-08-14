@@ -17,8 +17,8 @@ package roxana.toolkit.forms
 
 import org.scalajs.dom
 import roxana.core.validation.{InputConverter, InputType, ValidationError, validators}
-import roxana.core.{Component, validation}
-import rx.{Ctx, Rx, Var}
+import roxana.core.{Component, RoxanaContext, validation}
+import rx.{Rx, Var}
 import scalatags.JsDom.{Modifier, TypedTag}
 
 abstract class rxInputBase[Out: InputConverter, +M[_] : InputType]
@@ -28,8 +28,10 @@ abstract class rxInputBase[Out: InputConverter, +M[_] : InputType]
  tpe: String = "text",
  validator: validation.Validator[Out],
  modifiers: Seq[Modifier] = Seq.empty)
-(implicit rxCtx: Ctx.Owner, form: rxForm)
+(implicit rxCtx: RoxanaContext, form: rxForm)
   extends Component[dom.html.Input] with FormInput {
+
+  import rxCtx._
 
   // -- public API
   val rawValue: Var[String] = Var("")
@@ -76,5 +78,5 @@ case class rxInputText[+M[_] : InputType](cls: String = "",
                                           tpe: String = "text",
                                           validator: validation.Validator[String] = validators.nonEmpty,
                                           modifiers: Seq[Modifier] = Seq.empty)
-                                         (implicit rxCtx: Ctx.Owner, form: rxForm)
+                                         (implicit rxCtx: RoxanaContext, form: rxForm)
   extends rxInputBase[String, M](cls, id, placeholder, tpe, validator, modifiers)

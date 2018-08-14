@@ -19,18 +19,17 @@ import java.util.Objects
 
 import org.scalajs.dom
 import org.scalajs.dom.Element
-import roxana.core.renderers.{Renderer, Renderers}
-import rx.{Ctx, Rx}
+import rx.Rx
 import scalatags.JsDom.Frag
 import scalatags.JsDom.all.Modifier
 
 trait RoxanaImplicits {
 
   implicit class bindComp[T <: Component[_ <: dom.Element]](c: T)
-                                                           (implicit rxCtx: Ctx.Owner,
-                                                            renderer: Renderer = Renderers.default)
+                                                           (implicit rxCtx: RoxanaContext)
     extends Modifier with RxNodeInstances {
 
+    import rxCtx._
 
     override def applyTo(t: Element): Unit = {
       RxElementBinding(renderer(c)).applyTo(t)
@@ -38,9 +37,10 @@ trait RoxanaImplicits {
   }
 
   implicit class bindRxComp[T <: Component[_ <: dom.Element]](rx: Rx[T])
-                                                             (implicit rxCtx: Ctx.Owner,
-                                                              renderer: Renderer = Renderers.default)
+                                                             (implicit rxCtx: RoxanaContext)
     extends Modifier with RxNodeInstances {
+
+    import rxCtx._
 
     private def rendered: Rx[dom.Element] =
       rx.flatMap(renderer)
@@ -62,7 +62,8 @@ trait RoxanaImplicits {
 
   // FIXME rework this to use the renderer
   /*implicit*/ class IterableComponent[T <: dom.Element](cs: Iterable[Component[T]])
-                                                        (implicit rxCtx: Ctx.Owner) extends Frag {
+                                                        (implicit rxCtx: RoxanaContext) extends Frag {
+
     override def render: dom.Node = {
       val frag = org.scalajs.dom.document.createDocumentFragment()
       cs.map(_.elem).foreach(frag.appendChild)

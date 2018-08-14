@@ -1,5 +1,7 @@
 package roxana.routing
 
+import roxana.core.RoxanaContext
+
 import scala.reflect.ClassTag
 
 /**
@@ -7,6 +9,7 @@ import scala.reflect.ClassTag
   */
 trait ClientController {
 
+  protected implicit val rxCtx: RoxanaContext
   private var screen: Screen = _
 
   /**

@@ -17,7 +17,7 @@ package roxana.examples.screens
 
 import org.scalajs.dom
 import org.scalajs.dom.html.Div
-import roxana.core.Component
+import roxana.core.{Component, RoxanaContext}
 import roxana.examples.containers.{todoList, validationsDemo}
 import roxana.examples.{Router, Routes}
 import roxana.routing.Screen
@@ -25,7 +25,9 @@ import roxana.toolkit.forms.rxLink
 import rx._
 import scalatags.JsDom
 
-class ExamplesScreen(implicit rxCtx: Ctx.Owner) extends Screen {
+class ExamplesScreen(implicit rxCtx: RoxanaContext) extends Screen {
+
+  import rxCtx._
 
   val exampleName: Var[Option[String]] = Var(None)
   val examples: Map[String, (String, () => Component[_ <: dom.Element])] = Map(

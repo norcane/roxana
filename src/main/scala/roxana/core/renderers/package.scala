@@ -23,8 +23,6 @@ import rx.{Ctx, Rx}
   */
 package object renderers {
 
-  private implicit val rxCtx: Ctx.Owner = Ctx.Owner.safe()
-
   /**
     * The ''component renderer'' represents the way how to wrap and extend the component appearance
     * or behaviour based on the selected environment. For example, custom renderer can be defined
@@ -44,7 +42,7 @@ package object renderers {
       *
       * @return rendered component
       */
-    def default: Renderer = {
+    def default(implicit rxOwner: Ctx.Owner): Renderer = {
       case component => Rx(component.elem)
     }
   }

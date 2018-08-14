@@ -15,15 +15,13 @@
 
 package roxana.examples
 
+import roxana.core.RoxanaContext
 import roxana.examples.screens.ExamplesScreen
 import roxana.routing.{ClientController, Screen}
-import rx._
 
 import scala.reflect.ClassTag
 
 object Controller extends ClientController {
-
-  private implicit val rxCtx: Ctx.Owner = Ctx.Owner.safe()
 
   def home(): Unit = Router.routeTo(Routes.examples())
 
@@ -40,4 +38,6 @@ object Controller extends ClientController {
     LoadingOverlay.hide()
   }
 
+  override protected implicit val rxCtx: RoxanaContext =
+    RoxanaContext.Default.copy(renderer = renderers.bootstrap4)
 }
