@@ -16,27 +16,25 @@
 package roxana.toolkit.forms
 
 import org.scalajs.dom
-import roxana.core.validation.textinput.TextInput
-import roxana.core.validation.{stringValidators => validators}
+import roxana.core.validation.{InputConverter, InputType, ValidationError, validators}
 import roxana.core.{Component, validation}
 import rx.{Ctx, Rx, Var}
 import scalatags.JsDom.{Modifier, TypedTag}
 
-case class rxInputText[+M[_] : TextInput](cls: String = "",
-                                          id: String = "",
-                                          placeholder: String = "",
-                                          tpe: String = "text",
-                                          validator: validation.Validator[String, String] = validators.default,
-                                          modifiers: Seq[Modifier] = Seq.empty)
-                                         (implicit rxCtx: Ctx.Owner, form: rxForm)
+abstract class rxInputBase[Out: InputConverter, +M[_] : InputType]
+(cls: String = "",
+ id: String = "",
+ placeholder: String = "",
+ tpe: String = "text",
+ validator: validation.Validator[Out],
+ modifiers: Seq[Modifier] = Seq.empty)
+(implicit rxCtx: Ctx.Owner, form: rxForm)
   extends Component[dom.html.Input] with FormInput {
-
-  // when value is required, it should be not empty, otherwise this validation is ignored
-  private val _validator: validation.Validator[String, String] = validators.notEmpty(_).andThen(validator)
 
   // -- public API
   val rawValue: Var[String] = Var("")
-  override val valid: Rx[Boolean] = Rx(TextInput[M].errors(rawValue(), _validator).isEmpty)
+  val errors: Rx[Seq[ValidationError]] = Rx(InputType[M].errors(rawValue(), InputConverter[Out], validator))
+  override val valid: Rx[Boolean] = Rx(errors().isEmpty)
 
   // register the input component to the parent rxForm
   form.register(this)
@@ -60,6 +58,7 @@ case class rxInputText[+M[_] : TextInput](cls: String = "",
     element.onkeyup = (_: dom.KeyboardEvent) => {
       // register listeners for capturing value changes
       this.rawValue() = element.value
+      element.focus()
     }
 
     element
@@ -70,3 +69,12 @@ case class rxInputText[+M[_] : TextInput](cls: String = "",
     this.elem.value = ""
   }
 }
+
+case class rxInputText[+M[_] : InputType](cls: String = "",
+                                          id: String = "",
+                                          placeholder: String = "",
+                                          tpe: String = "text",
+                                          validator: validation.Validator[String] = validators.nonEmpty,
+                                          modifiers: Seq[Modifier] = Seq.empty)
+                                         (implicit rxCtx: Ctx.Owner, form: rxForm)
+  extends rxInputBase[String, M](cls, id, placeholder, tpe, validator, modifiers)

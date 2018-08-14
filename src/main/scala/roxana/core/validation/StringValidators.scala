@@ -15,9 +15,9 @@
 
 package roxana.core.validation
 
-trait StringValidators extends DefaultValidators {
+trait StringValidators extends ValidationSupport {
 
-  val notEmpty: Validator[String, String] = input =>
-    if (input != null && input.nonEmpty) valid(input) else invalid("validator.nonEmpty")
+  val nonEmpty: Validator[String] = input =>
+    if (input.nonEmpty) valid(input) else invalid("validator.nonEmpty")
 
 }

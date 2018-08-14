@@ -15,15 +15,13 @@
 
 package roxana.core.validation
 
-import cats.Id
+import cats.data.Validated
 
-trait ValidationImplicits {
+trait ValidationSupport {
 
-  implicit def idSequence: Sequence[Id] = new Sequence[Id] {
-    override def toSeq[A](value: Id[A]): Seq[A] = Seq(value)
-  }
+  def valid[Out](result: Out): Result[Out] = Validated.valid(result)
 
-  implicit def optionSequence: Sequence[Option] = new Sequence[Option] {
-    override def toSeq[A](value: Option[A]): Seq[A] = value.toList
-  }
+  def invalid[Out](messageKey: String, args: String*): Result[Out] =
+    Validated.invalid(ValidationError(messageKey, args: _*))
+
 }

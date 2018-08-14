@@ -39,8 +39,11 @@ object BootstrapV4Renderers {
     Rx(elem)
   }
 
-  def rxInputTextRenderer[M[_]](component: rxInputText[M])
+  def rxInputTextRenderer[Out, M[_]](component: rxInputText[M])
                                (implicit rxCtx: Ctx.Owner): Rx[dom.Element] = {
+
+    import scalatags.JsDom.all._
+
     val Valid = "is-valid"
     val Invalid = "is-invalid"
     val elem = component.elem
@@ -50,7 +53,12 @@ object BootstrapV4Renderers {
       Seq(Valid, Invalid) foreach elem.classList.remove
       elem.classList.add("form-control")
       elem.classList.add(validCls())
-      elem
+
+      div(
+        elem,
+        // TODO do proper error message localization
+        div(cls := "invalid-feedback", component.errors().map(_.message).mkString(","))
+      ).render
     }
   }
 

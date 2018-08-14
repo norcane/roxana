@@ -13,18 +13,15 @@
  * the License.
  */
 
-package roxana.core
+package roxana.core.validation
 
-import cats.data.Validated
+import simulacrum.typeclass
 
-package object validation {
+@typeclass trait InputConverter[Out] {
+  def convert(input: String): Result[Out]
+}
 
-  case class ValidationError(message: String, args: String*)
+object InputConverter extends ValidationSupport {
 
-  type Validator[T] = T => Result[T]
-
-  type Result[Out] = Validated[ValidationError, Out]
-
-  object validators extends StringValidators
-
+  implicit def stringIC: InputConverter[String] = (input: String) => valid(input)
 }

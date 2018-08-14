@@ -15,17 +15,20 @@
 
 package roxana.core.validation
 
-import simulacrum.typeclass
+import utest._
 
-package object textinput extends TextInputImplicits {
+object StringValidatorsSuite extends TestSuite {
 
-  @typeclass trait TextInput[M[_]] extends ValidableInput {
+  override def tests = Tests {
 
-    def extract(input: String): M[String]
+    'nonEmpty - {
+      val i1 = ""
+      val v1 = "The Cake is a Lie!"
 
-    def validate[Out](input: String, validator: Validator[String, Out]): M[ValResult[Out]]
-
-    def errors[Out](input: String, validator: Validator[String, Out]): Seq[ValidationError]
+      assert(
+        validators.nonEmpty(i1).isInvalid,
+        validators.nonEmpty(v1).isValid
+      )
+    }
   }
-
 }
