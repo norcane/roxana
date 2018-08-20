@@ -33,7 +33,7 @@ case class todoList()(implicit rxCtx: RoxanaContext)
   // --- public API
   val items: Var[List[todoList.Item]] = Var(List.empty)
 
-  // rxControls bindings
+  // component bindings
   // FIXME maybe there is better solution for this?
   private val inputNewItem = binding[rxInputText[Id]]
   private val formNewItem = binding[rxForm]

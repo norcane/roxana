@@ -43,14 +43,14 @@ class ExamplesScreen(implicit rxCtx: RoxanaContext) extends Screen {
 
     div(cls := "container mt-5 mb-5",
       div(cls := "row",
-        div(cls := "col-md-3", renderMenu),
-        div(cls := "col-md-9 mt-5", renderExample)
+        div(cls := "col-md-3", menuContainer),
+        div(cls := "col-md-9 mt-5", exampleContainer)
       )
     )
 
   }
 
-  private def renderExample = Rx {
+  private val exampleContainer = Rx {
     import scalatags.JsDom.all._
 
     example() match {
@@ -63,7 +63,7 @@ class ExamplesScreen(implicit rxCtx: RoxanaContext) extends Screen {
     }
   }
 
-  private def renderMenu = Rx {
+  private val menuContainer = Rx {
     import roxana.core.implicits._
     import scalatags.JsDom.all._
 
