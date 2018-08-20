@@ -15,6 +15,7 @@
 
 package roxana.core
 
+import roxana.core.l10n.Messages
 import roxana.core.renderers.{Renderer, Renderers}
 import rx.Ctx
 
@@ -28,13 +29,13 @@ trait RoxanaContext {
 
   /** Selected components renderer */
   implicit val renderer: Renderer
+
+  implicit val messages: Messages
 }
 
-case class DefaultRoxanaContext(rxOwner: rx.Ctx.Owner, renderer: Renderer) extends RoxanaContext
-
-object RoxanaContext {
-  val Default: DefaultRoxanaContext = {
-    val rxOwner = Ctx.Owner.safe()
-    DefaultRoxanaContext(rxOwner, Renderers.default(rxOwner))
-  }
+class DefaultRoxanaContext extends RoxanaContext {
+  override implicit val rxOwner: Ctx.Owner = Ctx.Owner.safe()
+  override implicit val renderer: Renderer = Renderers.default
+  override implicit val messages: Messages = Messages.Empty
 }
+

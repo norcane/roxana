@@ -17,6 +17,7 @@ package roxana.examples.renderers
 
 import org.scalajs.dom
 import org.scalajs.dom.html.Select
+import roxana.core.l10n.{LocaleSupport, Messages}
 import roxana.core.renderers.Renderer
 import roxana.toolkit.forms.{rxButton, rxInputText, rxSelectMenu}
 import rx.{Ctx, Rx}
@@ -24,9 +25,9 @@ import rx.{Ctx, Rx}
 /**
   * ''Bootstrap 4'' renderers for the ''roxana'' toolkit components.
   */
-object BootstrapV4Renderers {
+object BootstrapV4Renderers extends LocaleSupport {
 
-  def all(implicit rxCtx: Ctx.Owner): Renderer = {
+  def all(implicit rxCtx: Ctx.Owner, messages: Messages): Renderer = {
     case c: rxButton => rxButtonRenderer(c)
     case c: rxInputText[_] => rxInputTextRenderer(c)
     case c: rxSelectMenu[_] => rxSelectMenuRenderer(c)
@@ -40,7 +41,7 @@ object BootstrapV4Renderers {
   }
 
   def rxInputTextRenderer[Out, M[_]](component: rxInputText[M])
-                               (implicit rxCtx: Ctx.Owner): Rx[dom.Element] = {
+                               (implicit rxCtx: Ctx.Owner, messages: Messages): Rx[dom.Element] = {
 
     import scalatags.JsDom.all._
 
@@ -57,7 +58,9 @@ object BootstrapV4Renderers {
       div(
         elem,
         // TODO do proper error message localization
-        div(cls := "invalid-feedback", component.errors().map(_.message).mkString(","))
+        div(
+          cls := "invalid-feedback",
+          component.errors().map(err => loc(err.message, err.args: _*)).mkString(","))
       ).render
     }
   }

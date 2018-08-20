@@ -15,14 +15,10 @@
 
 package roxana.examples
 
-import roxana.core.renderers.Renderer
-
 /**
   * ''Scala.js'' bootstrap code for the Roxana example project.
   */
 object Launcher {
-
-  implicit val renderer: Renderer = roxana.examples.renderers.bootstrap4
 
   def main(args: Array[String]): Unit = {
     println(".: Welcome to the Roxana example project :.")

@@ -15,7 +15,9 @@
 
 package roxana.examples
 
-import roxana.core.RoxanaContext
+import roxana.core.l10n.Messages
+import roxana.core.renderers.Renderer
+import roxana.core.{DefaultRoxanaContext, RoxanaContext}
 import roxana.examples.screens.ExamplesScreen
 import roxana.routing.{ClientController, Screen}
 
@@ -38,6 +40,8 @@ object Controller extends ClientController {
     LoadingOverlay.hide()
   }
 
-  override protected implicit val rxCtx: RoxanaContext =
-    RoxanaContext.Default.copy(renderer = renderers.bootstrap4)
+  override protected implicit val rxCtx: RoxanaContext = new DefaultRoxanaContext {
+    override implicit val messages: Messages = l10n.DefaultMessages
+    override implicit val renderer: Renderer = renderers.bootstrap4
+  }
 }

@@ -15,6 +15,7 @@
 
 package roxana.examples
 
+import roxana.core.l10n.Messages
 import roxana.core.renderers.{Renderer, Renderers}
 import rx.Ctx
 
@@ -23,7 +24,7 @@ import rx.Ctx
   */
 package object renderers {
 
-  def bootstrap4(implicit rxCtx: Ctx.Owner): Renderer =
+  def bootstrap4(implicit rxCtx: Ctx.Owner, messages: Messages): Renderer =
     BootstrapV4Renderers.all.orElse(Renderers.default)
 
 }
