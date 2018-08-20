@@ -27,7 +27,7 @@ import scala.concurrent.Future
   * file containing the translations for the given language. In order to keep the code simple, many
   * checks that would be needed for the production code are omitted.
   */
-object ClientMessages {
+object LocalizedMessages {
 
   import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -41,12 +41,12 @@ object ClientMessages {
     * @param language language (optional, defaults to english)
     * @return translated messages
     */
-  def loadMessages(language: String = browserLanguage): Future[Messages] =
-    fetchMessages(language).recoverWith { case _: Throwable => fetchMessages(DefaultLanguage) }
+  def fetchFromServer(language: String = browserLanguage): Future[Messages] =
+    fetch(language).recoverWith { case _: Throwable => fetch(DefaultLanguage) }
 
   private def browserLanguage: String = dom.window.navigator.language.split("-")(0)
 
-  private def fetchMessages(language: String): Future[Messages] = {
+  private def fetch(language: String): Future[Messages] = {
     ext.Ajax.get(contextPath + s"/l10n/messages_$language.json")
       .map(xhr => Messages(ujson.read(xhr.responseText).obj.mapValues(_.str).toMap))
   }
