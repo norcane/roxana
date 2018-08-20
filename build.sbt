@@ -52,6 +52,9 @@ lazy val roxana = (project in file("."))
 lazy val examples = (project in file("roxana-examples"))
   .settings(
     name := "roxana-examples",
+    libraryDependencies ++= Seq(
+      "com.lihaoyi" %%% "ujson" % "0.6.6"
+    ),
     scalaJSUseMainModuleInitializer := true
   )
   .enablePlugins(ScalaJSPlugin)
