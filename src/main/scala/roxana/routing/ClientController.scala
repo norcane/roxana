@@ -15,6 +15,7 @@
 
 package roxana.routing
 
+import cats.Functor
 import roxana.core.RoxanaContext
 
 import scala.reflect.ClassTag
@@ -53,4 +54,28 @@ trait ClientController {
     this.screen = currScreen
   }
 
+}
+
+/**
+  * Adds support for handling context, that's wrapped in selected monad.
+  *
+  * @tparam M monad type
+  * @tparam T context type
+  */
+trait ContextSupport[M[_], T] {
+
+  /**
+    * Context, wrapped in selected monad.
+    */
+  protected val context: M[T]
+
+  /**
+    * Performs an action with the context.
+    *
+    * @param fn function performing an action
+    * @param fc functor monad instance
+    */
+  protected def withContext(fn: T => Unit)(implicit fc: Functor[M]): Unit = {
+    val _ = Functor[M].map(context)(fn)
+  }
 }

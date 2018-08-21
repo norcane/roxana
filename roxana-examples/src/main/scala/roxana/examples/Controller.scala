@@ -20,20 +20,15 @@ import roxana.core.renderers.Renderer
 import roxana.core.{DefaultRoxanaContext, RoxanaContext}
 import roxana.examples.l10n.LocalizedMessages
 import roxana.examples.screens.ExamplesScreen
-import roxana.routing.{ClientController, Screen}
+import roxana.routing.{ClientController, ContextSupport, Screen}
 
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 import scala.reflect.ClassTag
 
-object Controller extends ClientController {
+object Controller extends ClientController with ContextSupport[Future, RoxanaContext] {
 
-  import scala.concurrent.ExecutionContext.Implicits.global
-
-  private val rxCtxFt = LocalizedMessages.fetchFromServer() map { _messages =>
-    new DefaultRoxanaContext {
-      override implicit val messages: Messages = _messages
-      override implicit val renderer: Renderer = renderers.bootstrap4
-    }
-  }
+  import cats.instances.future._
 
   def home(): Unit = Router.routeTo(Routes.examples())
 
@@ -49,12 +44,17 @@ object Controller extends ClientController {
     }
   }
 
-  override protected def withScreen[T <: Screen : ClassTag](screen: => T)
-                                                           (fn: T => Unit)
+  override protected def withScreen[T <: Screen : ClassTag](screen: => T)(fn: T => Unit)
                                                            (implicit rxCtx: RoxanaContext): Unit = {
     super.withScreen(screen)(fn)
     LoadingOverlay.hide()
   }
 
-  private def withContext(fn: RoxanaContext => Unit): Unit = rxCtxFt foreach fn
+  private val messagesFt = LocalizedMessages.fetchFromServer()
+  override protected val context: Future[RoxanaContext] = messagesFt map { _messages =>
+    new DefaultRoxanaContext {
+      override implicit val messages: Messages = _messages
+      override implicit val renderer: Renderer = renderers.bootstrap4
+    }
+  }
 }

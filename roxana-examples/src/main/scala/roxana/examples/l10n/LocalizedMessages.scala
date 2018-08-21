@@ -31,6 +31,7 @@ object LocalizedMessages {
 
   import scala.concurrent.ExecutionContext.Implicits.global
 
+  // very naive & dirty way how to get context path, but sufficient for demo purposes
   private val contextPath = dom.window.location.pathname.split("/index.html")(0)
   private val DefaultLanguage = "en"
 
@@ -44,6 +45,7 @@ object LocalizedMessages {
   def fetchFromServer(language: String = browserLanguage): Future[Messages] =
     fetch(language).recoverWith { case _: Throwable => fetch(DefaultLanguage) }
 
+  // we need only the language part, not the country (i.e. en-US -> en)
   private def browserLanguage: String = dom.window.navigator.language.split("-")(0)
 
   private def fetch(language: String): Future[Messages] = {

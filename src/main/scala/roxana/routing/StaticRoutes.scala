@@ -19,12 +19,12 @@ import scala.annotation.tailrec
 
 trait StaticRoutes {
 
-  private val _allRoutes = collection.mutable.ListBuffer.empty[Route[_]]
+  private val _routes = collection.mutable.ListBuffer.empty[Route[_]]
 
   private def splitPath(path: String): List[String] = path.split("/").dropWhile(_.isEmpty).toList
 
   private def addRoute[R <: Route[_]](route: R) = {
-    _allRoutes += route
+    _routes += route
     route
   }
 
@@ -183,8 +183,8 @@ trait StaticRoutes {
 
   // PUBLIC API
 
-  def allRoutes: Seq[Route[_]] = _allRoutes
+  def routes: Seq[Route[_]] = _routes
 
-  def actionForPath(path: String): Option[() => Unit] = allRoutes.flatMap(_.unapply(path)).headOption
+  def actionForPath(path: String): Option[() => Unit] = routes.flatMap(_.unapply(path)).headOption
 }
 
