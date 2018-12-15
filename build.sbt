@@ -1,6 +1,6 @@
 import sbt.CrossVersion
 // Scala version used
-scalaVersion in Global := "2.12.6"
+scalaVersion in Global := "2.12.8"
 
 // Project details
 name := "roxana"
@@ -38,10 +38,10 @@ lazy val roxana = (project in file("."))
       /// runtime dependencies
       "com.lihaoyi" %%% "scalatags" % "0.6.7",
       "com.lihaoyi" %%% "scalarx" % "0.4.0",
-      "com.github.mpilquist" %%% "simulacrum" % "0.13.0",
+      "com.github.mpilquist" %%% "simulacrum" % "0.14.0",
 
       /// test dependencies
-      "com.lihaoyi" %%% "utest" % "0.6.4" % "test"
+      "com.lihaoyi" %%% "utest" % "0.6.6" % "test"
     ),
     testFrameworks += new TestFramework("utest.runner.Framework"),
     jsEnv := new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv,
