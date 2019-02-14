@@ -38,7 +38,7 @@ lazy val roxana = (project in file("."))
       /// runtime dependencies
       "com.lihaoyi" %%% "scalatags" % "0.6.7",
       "com.lihaoyi" %%% "scalarx" % "0.4.0",
-      "com.github.mpilquist" %%% "simulacrum" % "0.14.0",
+      "com.github.mpilquist" %%% "simulacrum" % "0.15.0",
 
       /// test dependencies
       "com.lihaoyi" %%% "utest" % "0.6.6" % "test"
