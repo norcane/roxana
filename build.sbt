@@ -36,12 +36,12 @@ lazy val roxana = (project in file("."))
     name := "roxana",
     libraryDependencies ++= Seq(
       /// runtime dependencies
-      "com.lihaoyi" %%% "scalatags" % "0.6.7",
+      "com.lihaoyi" %%% "scalatags" % "0.6.8",
       "com.lihaoyi" %%% "scalarx" % "0.4.0",
-      "com.github.mpilquist" %%% "simulacrum" % "0.15.0",
+      "com.github.mpilquist" %%% "simulacrum" % "0.18.0",
 
       /// test dependencies
-      "com.lihaoyi" %%% "utest" % "0.6.6" % "test"
+      "com.lihaoyi" %%% "utest" % "0.6.7" % "test"
     ),
     testFrameworks += new TestFramework("utest.runner.Framework"),
     jsEnv := new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv,
