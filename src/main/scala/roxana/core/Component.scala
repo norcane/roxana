@@ -51,3 +51,7 @@ trait Validable {
 trait Resettable {
   def reset(): Unit
 }
+
+trait Focusable {
+  def focus(): Unit
+}

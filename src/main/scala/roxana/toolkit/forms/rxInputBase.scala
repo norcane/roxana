@@ -70,6 +70,10 @@ abstract class rxInputBase[Out: InputConverter, +M[_] : InputType]
     rawValue() = ""
     this.elem.value = ""
   }
+
+  override def focus(): Unit = {
+    dom.window.setTimeout(() => this.elem.focus(), 100)
+  }
 }
 
 case class rxInputText[+M[_] : InputType](cls: String = "",

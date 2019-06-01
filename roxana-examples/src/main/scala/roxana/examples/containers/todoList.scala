@@ -54,7 +54,7 @@ case class todoList()(implicit rxCtx: RoxanaContext)
         div(
           hr(),
           div(cls := "clearfix",
-            rxForm(cls = "form-horizontal", onSubmit = handleSubmit) { implicit form =>
+            rxForm(cls = "form-horizontal", onSubmit = handleSubmit, autoFocus = true) { implicit form =>
               div(
                 div(cls := "form-group row justify-content-md-center",
                   label(cls := "col-md-2 col-form-label", `for` := "newItem", "Task"),
@@ -101,6 +101,7 @@ case class todoList()(implicit rxCtx: RoxanaContext)
 
   private def removeItem(item: todoList.Item)(ev: dom.Event): Unit = {
     items() = items.now filterNot (_.hash == item.hash)
+    bound(formNewItem).focus()
   }
 
   private def handleSubmit(form: rxForm): Unit = {
@@ -111,7 +112,5 @@ case class todoList()(implicit rxCtx: RoxanaContext)
 }
 
 object todoList {
-
   case class Item(text: String, hash: Long = System.nanoTime())
-
 }

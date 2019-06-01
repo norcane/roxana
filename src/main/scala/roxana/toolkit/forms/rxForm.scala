@@ -16,7 +16,7 @@
 package roxana.toolkit.forms
 
 import org.scalajs.dom
-import roxana.core.{Component, Resettable, RoxanaContext, Validable}
+import roxana.core.{Component, Focusable, Resettable, RoxanaContext, Validable}
 import rx._
 import scalatags.JsDom
 import scalatags.JsDom.Modifier
@@ -24,10 +24,11 @@ import scalatags.JsDom.Modifier
 
 case class rxForm(cls: String = "",
                   onSubmit: rxForm => Unit = _ => (),
+                  autoFocus: Boolean = false,
                   modifiers: Seq[Modifier] = Seq.empty)
                  (formContent: rxForm => Modifier)
                  (implicit rxCtx: RoxanaContext)
-  extends Component[dom.html.Form] with Resettable {
+  extends Component[dom.html.Form] with Resettable with Focusable {
 
   import rxCtx._
 
@@ -56,10 +57,18 @@ case class rxForm(cls: String = "",
       false
     }
 
+    if (autoFocus) focus()
     elem
   }
 
-  override def reset(): Unit = inputs.now foreach (_.reset())
+  override def reset(): Unit = {
+    inputs.now foreach (_.reset())
+    if (autoFocus) focus()
+  }
+
+  override def focus(): Unit = {
+    inputs.now.headOption foreach (_.focus())
+  }
 
   def submit(): Unit = runOnSubmitIfValid()
 
@@ -75,5 +84,5 @@ object rxForm {
   def empty(implicit rxCtx: RoxanaContext): rxForm = rxForm()(_ => div())
 }
 
-trait FormInput extends Validable with Resettable
+trait FormInput extends Validable with Resettable with Focusable
 
