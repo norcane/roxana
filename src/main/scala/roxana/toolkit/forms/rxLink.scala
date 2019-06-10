@@ -15,8 +15,7 @@
 package roxana.toolkit.forms
 
 import org.scalajs.dom
-import roxana.core.Component
-import rx.Ctx
+import roxana.core.{Component, RoxanaContext}
 import scalatags.JsDom
 import scalatags.JsDom.{Modifier, TypedTag}
 
@@ -24,7 +23,7 @@ case class rxLink(content: Modifier,
                   onClick: dom.Event => Unit,
                   cls: String = "",
                   modifiers: Seq[Modifier] = Seq.empty)
-                 (implicit rxCtx: Ctx.Owner)
+                 (implicit rxCtx: RoxanaContext)
   extends Component[dom.html.Anchor] {
 
   override protected def buildTag: JsDom.TypedTag[dom.html.Anchor] = {

@@ -22,7 +22,7 @@ import scalatags.JsDom
 
 case class rxSelect[T](initialItems: Seq[rxSelect.Item[T]] = Seq.empty,
                        onChange: rxSelect.Item[T] => Unit = (_: rxSelect.Item[T]) => ()
-                          )(implicit rxCtx: RoxanaContext) extends Component[dom.html.Select] {
+                      )(implicit rxCtx: RoxanaContext) extends Component[dom.html.Select] {
 
   import rxCtx._
 

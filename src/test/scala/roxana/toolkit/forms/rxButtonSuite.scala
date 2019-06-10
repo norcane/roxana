@@ -15,12 +15,12 @@
 
 package roxana.toolkit.forms
 
-import rx._
+import roxana.core.RoxanaContext
 import utest._
 
 object rxButtonSuite extends TestSuite {
 
-  private implicit val rxCtx: Ctx.Owner = Ctx.Owner.safe()
+  private implicit val rxCtx: RoxanaContext = RoxanaContext.Default
 
   val tests = Tests {
     'testAttributes - {

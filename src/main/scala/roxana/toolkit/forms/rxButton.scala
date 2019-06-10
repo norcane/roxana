@@ -17,8 +17,7 @@ package roxana.toolkit.forms
 import org.scalajs.dom
 import org.scalajs.dom.html
 import org.scalajs.dom.html.Button
-import roxana.core.Component
-import rx._
+import roxana.core.{Component, RoxanaContext}
 import scalatags.JsDom
 import scalatags.JsDom.{Modifier, TypedTag}
 
@@ -29,7 +28,7 @@ case class rxButton(label: String,
                     disabled: Boolean = false,
                     onClick: dom.Event => Unit = _ => (),
                     modifiers: Seq[Modifier] = Seq.empty)
-                   (implicit rxCtx: Ctx.Owner)
+                   (implicit rxCtx: RoxanaContext)
   extends Component[dom.html.Button] {
 
   override protected def buildTag: JsDom.TypedTag[Button] = {
