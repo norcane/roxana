@@ -41,7 +41,7 @@ lazy val roxana = (project in file("."))
       "com.github.mpilquist" %%% "simulacrum" % "0.18.0",
 
       /// test dependencies
-      "com.lihaoyi" %%% "utest" % "0.6.7" % "test"
+      "com.lihaoyi" %%% "utest" % "0.6.9" % "test"
     ),
     testFrameworks += new TestFramework("utest.runner.Framework"),
     jsEnv := new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv,

@@ -65,7 +65,8 @@ case class todoList()(implicit rxCtx: RoxanaContext)
                 ),
                 div(cls := "row justify-content-md-center",
                   div(cls := "col-md-8 text-right",
-                    // FIXME try to figure out how to get rid of the enclosing Rx()
+                    Rx(rxButton("Clear all", onClick = _ => cleanItems(), cls = "btn-light mr-1",
+                      disabled = items().isEmpty)),
                     Rx(rxButton("Add task", onClick = _ => form.submit(), cls = "btn-primary",
                       disabled = !form.valid()))
                   )
@@ -101,6 +102,11 @@ case class todoList()(implicit rxCtx: RoxanaContext)
 
   private def removeItem(item: todoList.Item)(ev: dom.Event): Unit = {
     items() = items.now filterNot (_.hash == item.hash)
+    bound(formNewItem).focus()
+  }
+
+  private def cleanItems(): Unit = {
+    items() = Nil
     bound(formNewItem).focus()
   }
 
