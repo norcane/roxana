@@ -15,7 +15,6 @@
 
 package roxana.toolkit.forms
 
-import cats.Id
 import roxana.core.{DefaultRoxanaContext, RoxanaContext}
 import utest._
 
@@ -40,7 +39,7 @@ object rxInputTextSuite extends TestSuite {
       import roxana.core.implicits._
 
       implicit val form: rxForm = rxForm.empty
-      val boundControl = binding[rxInputText[Id]]
+      val boundControl = binding[rxInputText[Required]]
       val inputText = testInputText.bindTo(boundControl)
       val actual = bound(boundControl)
 
@@ -56,5 +55,5 @@ object rxInputTextSuite extends TestSuite {
   }
 
   private[roxana] def testInputText(implicit form: rxForm) =
-    rxInputText[Id](cls = Data.cls, id = Data.id, tpe = Data.tpe)
+    rxInputText[Required](cls = Data.cls, id = Data.id, tpe = Data.tpe)
 }

@@ -15,7 +15,8 @@
 
 package roxana.core.validation
 
-import cats.{FlatMap, Functor, Id}
+import cats.{FlatMap, Functor}
+import roxana.toolkit.forms.Required
 import simulacrum.typeclass
 
 
@@ -33,13 +34,13 @@ import simulacrum.typeclass
 
 object InputType {
 
-  implicit def idInputType: InputType[Id] = new InputType[Id] {
-    override def pure(input: String): Id[String] = input
+  implicit def idInputType: InputType[Required] = new InputType[Required] {
+    override def pure(input: String): Required[String] = input
 
     override def validated[Out](input: String,
                                 converter: InputConverter[Out],
                                 validator: Validator[Out]): Result[Out] =
-      Functor[Id].map(pure(input))(in => converter.convert(in).andThen(validator))
+      Functor[Required].map(pure(input))(in => converter.convert(in).andThen(validator))
 
     override def errors[Out](input: String,
                              converter: InputConverter[Out],

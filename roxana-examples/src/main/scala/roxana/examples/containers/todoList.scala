@@ -15,12 +15,11 @@
 
 package roxana.examples.containers
 
-import cats.Id
 import org.scalajs.dom
 import org.scalajs.dom.html.LI
 import roxana.core.helpers._
 import roxana.core.{Component, RoxanaContext}
-import roxana.toolkit.forms.{rxButton, rxForm, rxInputText}
+import roxana.toolkit.forms.{Required, rxButton, rxForm, rxInputText}
 import rx._
 import scalatags.JsDom
 
@@ -34,8 +33,7 @@ case class todoList()(implicit rxCtx: RoxanaContext)
   val items: Var[List[todoList.Item]] = Var(List.empty)
 
   // component bindings
-  // FIXME maybe there is better solution for this?
-  private val inputNewItem = binding[rxInputText[Id]]
+  private val inputNewItem = binding[rxInputText[Required]]
   private val formNewItem = binding[rxForm]
 
   override protected def buildTag: JsDom.TypedTag[dom.html.Div] = {
@@ -59,7 +57,7 @@ case class todoList()(implicit rxCtx: RoxanaContext)
                 div(cls := "form-group row justify-content-md-center",
                   label(cls := "col-md-2 col-form-label", `for` := "newItem", "Task"),
                   div(cls := "col-md-6",
-                    rxInputText[Id](id = "newItem", placeholder = "What do you need to do?",
+                    rxInputText[Required](id = "newItem", placeholder = "What do you need to do?",
                       modifiers = Seq(autocomplete := "off")).bindTo(inputNewItem)
                   )
                 ),

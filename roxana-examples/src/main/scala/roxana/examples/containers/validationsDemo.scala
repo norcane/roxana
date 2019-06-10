@@ -15,10 +15,9 @@
 
 package roxana.examples.containers
 
-import cats.Id
 import org.scalajs.dom
 import roxana.core.{Component, RoxanaContext}
-import roxana.toolkit.forms.{rxForm, rxInputText}
+import roxana.toolkit.forms.{Required, rxForm, rxInputText}
 import scalatags.JsDom
 
 case class validationsDemo()(implicit rxCtx: RoxanaContext) extends Component[dom.html.Div] {
@@ -34,7 +33,7 @@ case class validationsDemo()(implicit rxCtx: RoxanaContext) extends Component[do
             label(cls := "col-md-4 col-form-label text-right", `for` := "text-input-1",
               "Text input with required value:"),
             div(cls := "col-md-4",
-              rxInputText[Id](id = "text-input-1",
+              rxInputText[Required](id = "text-input-1",
                 modifiers = Seq(autocomplete := "off"))
             )
           )
