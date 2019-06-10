@@ -15,7 +15,6 @@
 package roxana.examples.containers
 
 import org.scalajs.dom
-import org.scalajs.dom.html.LI
 import roxana.core.helpers._
 import roxana.core.{Component, RoxanaContext}
 import roxana.toolkit.forms.{Required, rxButton, rxCheck, rxForm, rxInputText}
@@ -39,11 +38,11 @@ case class todoList()(implicit rxCtx: RoxanaContext)
     import roxana.core.implicits._
     import scalatags.JsDom.all._
 
-    val todoItems: Rx.Dynamic[List[LI]] = Rx(items().map(renderItem(_).render))
+    val todoItems: Rx.Dynamic[List[dom.html.LI]] = Rx(items().map(renderItem(_).render))
 
     div(cls := "row justify-content-md-center todolist",
       div(cls := "card card-body bg-light col-md-10",
-        h1(cls := "mb-5", "Things to do:"),
+        h1(cls := "mb-5", "To-Do List"),
         renderEmptyWarning(),
         ul(cls := "list-group",
           todoItems
@@ -54,15 +53,14 @@ case class todoList()(implicit rxCtx: RoxanaContext)
             rxForm(cls = "form-horizontal", onSubmit = handleSubmit, autoFocus = true) { implicit form =>
               div(
                 div(cls := "form-group row justify-content-md-center",
-                  label(cls := "col-md-2 col-form-label", `for` := "newItem", "Task"),
-                  div(cls := "col-md-6",
+                  div(cls := "col-md-12",
                     rxInputText[Required](id = "newItem", placeholder = "What do you need to do?",
                       modifiers = Seq(autocomplete := "off")).bindTo(inputNewItem)
                   )
                 ),
                 div(cls := "row justify-content-md-center",
-                  div(cls := "col-md-8 text-right",
-                    Rx(rxButton("Remove done items", onClick = _ => cleanDoneItems(), cls = "btn-light mr-1",
+                  div(cls := "col-md-12 text-right",
+                    Rx(rxButton("Remove done tasks", onClick = _ => cleanDoneItems(), cls = "btn-light mr-1",
                       disabled = items().count(_.done) == 0)),
                     Rx(rxButton("Add task", onClick = _ => form.submit(), cls = "btn-primary",
                       disabled = !form.valid()))

@@ -20,16 +20,16 @@ import roxana.core.{Component, RoxanaContext}
 import rx._
 import scalatags.JsDom
 
-case class rxSelectMenu[T](initialItems: Seq[rxSelectMenu.Item[T]] = Seq.empty,
-                            onChange: rxSelectMenu.Item[T] => Unit = (_: rxSelectMenu.Item[T]) => ()
+case class rxSelect[T](initialItems: Seq[rxSelect.Item[T]] = Seq.empty,
+                       onChange: rxSelect.Item[T] => Unit = (_: rxSelect.Item[T]) => ()
                           )(implicit rxCtx: RoxanaContext) extends Component[dom.html.Select] {
 
   import rxCtx._
 
   // -- public API
-  val items: Var[Seq[rxSelectMenu.Item[T]]] = Var(initialItems)
+  val items: Var[Seq[rxSelect.Item[T]]] = Var(initialItems)
 
-  private val mapping: Rx[Map[String, rxSelectMenu.Item[T]]] =
+  private val mapping: Rx[Map[String, rxSelect.Item[T]]] =
     Rx(items().map(item => item.value.hashCode().toString -> item).toMap)
 
   override protected def buildTag: JsDom.TypedTag[Select] = {
@@ -53,7 +53,7 @@ case class rxSelectMenu[T](initialItems: Seq[rxSelectMenu.Item[T]] = Seq.empty,
   }
 }
 
-case object rxSelectMenu {
+case object rxSelect {
 
   case class Item[T](label: String, value: T)
 

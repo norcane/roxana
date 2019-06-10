@@ -18,19 +18,23 @@ import org.scalajs.dom
 import org.scalajs.dom.html.Select
 import roxana.core.l10n.{LocaleSupport, Messages}
 import roxana.core.renderers.Renderer
-import roxana.toolkit.forms.{rxButton, rxCheck, rxInputText, rxSelectMenu}
+import roxana.toolkit.forms.{rxButton, rxCheck, rxInputText, rxSelect}
 import rx.{Ctx, Rx}
+
+import scala.util.Random
 
 /**
   * ''Bootstrap 4'' renderers for the ''roxana'' toolkit components.
   */
 object BootstrapV4Renderers extends LocaleSupport {
 
+  val HashLength: Int = 8
+
   def all(implicit rxCtx: Ctx.Owner, messages: Messages): Renderer = {
     case c: rxButton => rxButtonRenderer(c)
     case c: rxCheck => rxCheckRenderer(c)
     case c: rxInputText[_] => rxInputTextRenderer(c)
-    case c: rxSelectMenu[_] => rxSelectMenuRenderer(c)
+    case c: rxSelect[_] => rxSelectMenuRenderer(c)
   }
 
   def rxButtonRenderer(component: rxButton)(implicit rxCtx: Ctx.Owner): Rx[dom.Element] = {
@@ -43,7 +47,7 @@ object BootstrapV4Renderers extends LocaleSupport {
   def rxCheckRenderer(component: rxCheck)(implicit rxCtx: Ctx.Owner): Rx.Dynamic[dom.Element] = {
     import scalatags.JsDom.all._
 
-    def hash(): Long = System.nanoTime()
+    def hash(): String = Random.alphanumeric.take(HashLength).mkString("")
 
     val elem = component.elem
 
@@ -85,7 +89,7 @@ object BootstrapV4Renderers extends LocaleSupport {
     }
   }
 
-  def rxSelectMenuRenderer[T](component: rxSelectMenu[T])
+  def rxSelectMenuRenderer[T](component: rxSelect[T])
                              (implicit rxCtx: Ctx.Owner): Rx.Dynamic[Select] = {
     val elem = component.elem
 
