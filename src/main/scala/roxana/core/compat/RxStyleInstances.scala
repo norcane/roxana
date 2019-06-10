@@ -12,11 +12,10 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-
-package roxana.core
+package roxana.core.compat
 
 import org.scalajs.dom.Element
-import rx._
+import rx.{Ctx, Rx, Var}
 import scalatags.JsDom.all.{PixelStyleValue, StyleValue}
 import scalatags.generic.Style
 

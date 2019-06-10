@@ -12,8 +12,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-
-package roxana.core
+package roxana.core.compat
 
 import java.util.concurrent.atomic.AtomicReference
 
@@ -21,6 +20,7 @@ import org.scalajs.dom
 import org.scalajs.dom.Element
 import org.scalajs.dom.ext._
 import org.scalajs.dom.raw.{Comment, Node}
+import roxana.core.RoxanaContext
 import rx._
 import scalatags.JsDom.TypedTag
 import scalatags.JsDom.all.{Frag, Modifier}

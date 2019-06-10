@@ -19,6 +19,7 @@ import java.util.Objects
 
 import org.scalajs.dom
 import org.scalajs.dom.Element
+import roxana.core.compat.RxNodeInstances
 import rx.Rx
 import scalatags.JsDom.Frag
 import scalatags.JsDom.all.Modifier

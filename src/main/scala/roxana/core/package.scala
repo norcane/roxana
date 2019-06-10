@@ -15,6 +15,8 @@
 
 package roxana
 
+import roxana.core.compat.{RxAttrInstances, RxNodeInstances, RxStyleInstances}
+
 package object core {
 
   object helpers extends RoxanaHelpers
