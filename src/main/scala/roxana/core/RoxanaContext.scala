@@ -30,12 +30,18 @@ trait RoxanaContext {
   /** Selected components renderer */
   implicit val renderer: Renderer
 
+  /** Localized messages */
   implicit val messages: Messages
 }
 
-class DefaultRoxanaContext extends RoxanaContext {
-  override implicit val rxOwner: Ctx.Owner = Ctx.Owner.safe()
-  override implicit val renderer: Renderer = Renderers.default
-  override implicit val messages: Messages = Messages.Empty
+object RoxanaContext {
+
+  class DefaultContext extends RoxanaContext {
+    override implicit val rxOwner: Ctx.Owner = Ctx.Owner.safe()
+    override implicit val renderer: Renderer = Renderers.default
+    override implicit val messages: Messages = Messages.Empty
+  }
+
+  val Default: RoxanaContext = new DefaultContext
 }
 

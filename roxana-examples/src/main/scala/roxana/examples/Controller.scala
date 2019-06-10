@@ -15,9 +15,9 @@
 
 package roxana.examples
 
+import roxana.core.RoxanaContext
 import roxana.core.l10n.Messages
 import roxana.core.renderers.Renderer
-import roxana.core.{DefaultRoxanaContext, RoxanaContext}
 import roxana.examples.l10n.LocalizedMessages
 import roxana.examples.screens.ExamplesScreen
 import roxana.routing.{ClientController, ContextSupport, Screen}
@@ -52,7 +52,7 @@ object Controller extends ClientController with ContextSupport[Future, RoxanaCon
 
   private val messagesFt = LocalizedMessages.fetchFromServer()
   override protected val context: Future[RoxanaContext] = messagesFt map { _messages =>
-    new DefaultRoxanaContext {
+    new RoxanaContext.DefaultContext {
       override implicit val messages: Messages = _messages
       override implicit val renderer: Renderer = renderers.bootstrap4
     }
