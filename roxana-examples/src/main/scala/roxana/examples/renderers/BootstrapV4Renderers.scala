@@ -12,14 +12,13 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-
 package roxana.examples.renderers
 
 import org.scalajs.dom
 import org.scalajs.dom.html.Select
 import roxana.core.l10n.{LocaleSupport, Messages}
 import roxana.core.renderers.Renderer
-import roxana.toolkit.forms.{rxButton, rxInputText, rxSelectMenu}
+import roxana.toolkit.forms.{rxButton, rxCheck, rxInputText, rxSelectMenu}
 import rx.{Ctx, Rx}
 
 /**
@@ -29,6 +28,7 @@ object BootstrapV4Renderers extends LocaleSupport {
 
   def all(implicit rxCtx: Ctx.Owner, messages: Messages): Renderer = {
     case c: rxButton => rxButtonRenderer(c)
+    case c: rxCheck => rxCheckRenderer(c)
     case c: rxInputText[_] => rxInputTextRenderer(c)
     case c: rxSelectMenu[_] => rxSelectMenuRenderer(c)
   }
@@ -40,8 +40,28 @@ object BootstrapV4Renderers extends LocaleSupport {
     Rx(elem)
   }
 
+  def rxCheckRenderer(component: rxCheck)(implicit rxCtx: Ctx.Owner): Rx.Dynamic[dom.Element] = {
+    import scalatags.JsDom.all._
+
+    def hash(): Long = System.nanoTime()
+
+    val elem = component.elem
+
+    Rx {
+      val text = if (component.value()) del(component.label) else div(component.label)
+      val elemId = if (elem.id == null || elem.id.isEmpty) s"check-${hash()}" else elem.id
+      elem.id = elemId
+      elem.classList.add("custom-control-input")
+
+      div(cls := "custom-control custom-checkbox",
+        elem,
+        label(cls := "custom-control-label", `for` := elemId, text)
+      ).render
+    }
+  }
+
   def rxInputTextRenderer[Out, M[_]](component: rxInputText[M])
-                               (implicit rxCtx: Ctx.Owner, messages: Messages): Rx[dom.Element] = {
+                                    (implicit rxCtx: Ctx.Owner, messages: Messages): Rx[dom.Element] = {
 
     import scalatags.JsDom.all._
 

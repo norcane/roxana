@@ -12,14 +12,13 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-
 package roxana.examples.containers
 
 import org.scalajs.dom
 import org.scalajs.dom.html.LI
 import roxana.core.helpers._
 import roxana.core.{Component, RoxanaContext}
-import roxana.toolkit.forms.{Required, rxButton, rxForm, rxInputText}
+import roxana.toolkit.forms.{Required, rxButton, rxCheck, rxForm, rxInputText}
 import rx._
 import scalatags.JsDom
 
@@ -42,7 +41,7 @@ case class todoList()(implicit rxCtx: RoxanaContext)
 
     val todoItems: Rx.Dynamic[List[LI]] = Rx(items().map(renderItem(_).render))
 
-    div(cls := "row justify-content-md-center",
+    div(cls := "row justify-content-md-center todolist",
       div(cls := "card card-body bg-light col-md-10",
         h1(cls := "mb-5", "Things to do:"),
         renderEmptyWarning(),
@@ -63,8 +62,8 @@ case class todoList()(implicit rxCtx: RoxanaContext)
                 ),
                 div(cls := "row justify-content-md-center",
                   div(cls := "col-md-8 text-right",
-                    Rx(rxButton("Clear all", onClick = _ => cleanItems(), cls = "btn-light mr-1",
-                      disabled = items().isEmpty)),
+                    Rx(rxButton("Remove done items", onClick = _ => cleanDoneItems(), cls = "btn-light mr-1",
+                      disabled = items().count(_.done) == 0)),
                     Rx(rxButton("Add task", onClick = _ => form.submit(), cls = "btn-primary",
                       disabled = !form.valid()))
                   )
@@ -82,9 +81,12 @@ case class todoList()(implicit rxCtx: RoxanaContext)
     import scalatags.JsDom.all._
 
     li(cls := "list-group-item clearfix",
-      span(cls := "align-middle", item.text),
-      div(cls := "float-right",
-        rxButton("Ｘ", onClick = removeItem(item), cls = "btn-sm btn-danger img-circle")
+      div(cls := "row",
+        div(cls := "col-md-11",
+          rxCheck(label = item.text, onChange = toggleDone(item), checked = item.done)),
+        div(cls := "col-md-1",
+          rxButton("Ｘ", onClick = removeItem(item), cls = "btn-sm btn-danger img-circle")
+        )
       )
     )
   }
@@ -98,13 +100,17 @@ case class todoList()(implicit rxCtx: RoxanaContext)
     div(display := cssDisplay, cls := "alert alert-info", "No items left to be done. Yay!!!")
   }
 
+  private def toggleDone(item: todoList.Item)(ev: dom.Event): Unit = {
+    items() = items.now.updated(items.now.indexOf(item), item.copy(done = !item.done))
+  }
+
   private def removeItem(item: todoList.Item)(ev: dom.Event): Unit = {
     items() = items.now filterNot (_.hash == item.hash)
     bound(formNewItem).focus()
   }
 
-  private def cleanItems(): Unit = {
-    items() = Nil
+  private def cleanDoneItems(): Unit = {
+    items() = items.now filterNot (_.done)
     bound(formNewItem).focus()
   }
 
@@ -116,5 +122,5 @@ case class todoList()(implicit rxCtx: RoxanaContext)
 }
 
 object todoList {
-  case class Item(text: String, hash: Long = System.nanoTime())
+  case class Item(text: String, hash: Long = System.nanoTime(), done: Boolean = false)
 }

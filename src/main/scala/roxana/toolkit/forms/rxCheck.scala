@@ -15,36 +15,32 @@
 package roxana.toolkit.forms
 
 import org.scalajs.dom
-import roxana.core.Component
-import rx.Ctx
+import org.scalajs.dom.html.Input
+import roxana.core.{Component, RoxanaContext}
+import rx.Var
 import scalatags.JsDom
-import scalatags.JsDom.{Modifier, TypedTag}
 
-case class rxLink(content: Modifier,
-                  onClick: dom.Event => Unit,
-                  cls: String = "",
-                  modifiers: Seq[Modifier] = Seq.empty)
-                 (implicit rxCtx: Ctx.Owner)
-  extends Component[dom.html.Anchor] {
+case class rxCheck(label: String = "",
+                   checked: Boolean = false,
+                   onChange: dom.Event => Unit = _ => ())
+                  (implicit rxCtx: RoxanaContext) extends Component[dom.html.Input] {
 
-  override protected def buildTag: JsDom.TypedTag[dom.html.Anchor] = {
+  val value: Var[Boolean] = Var(checked)
+
+  override protected def buildTag: JsDom.TypedTag[Input] = {
     import scalatags.JsDom.all._
     import scalatags.JsDom.attrs
 
-
-    val _modifiers = modifiers ++ buildParams(
-      addIf(attrs.cls, this.cls)
-    )
-
-    a(href := "#", this.content)(_modifiers: _*)
+    val checkedAttr = if (this.checked) List(attrs.checked) else List.empty
+    input(`type` := "checkbox")(checkedAttr: _*)
   }
 
-  override protected def buildElem(tag: TypedTag[dom.html.Anchor]): dom.html.Anchor = {
+  override protected def buildElem(tag: JsDom.TypedTag[Input]): Input = {
     val elem = super.buildElem(tag)
 
-    elem.onclick = (ev: dom.Event) => {
-      ev.preventDefault()
-      onClick(ev)
+    elem.onchange = (ev: dom.Event) => {
+      this.value() = !this.value.now
+      onChange(ev)
     }
 
     elem

@@ -87,6 +87,11 @@ footer {
     margin: 10px 0;
 }
 
+del {
+    /* Appearance */
+    color: #BDBDBD;
+}
+
 .nav.left-menu > h2 {
     /* Positioning */
     padding: 0 1rem;
@@ -122,6 +127,28 @@ footer {
     font-weight: bold;
     border-right: 2px #FF8F00 solid;
 }
+
+.todolist .custom-control-label {
+    /* Positioning */
+    display: block;
+
+    /* Appearance */
+    font-size: 1.5em;
+}
+
+.todolist .custom-control-label > div,
+.todolist .custom-control-label > del {
+    /* Appearance */
+    margin-left: .5em;
+}
+
+.todolist .custom-control-label::before,
+.todolist .custom-control-label::after {
+    /* Appearance */
+    top: .45em;
+}
+
+
 
 #loading-overlay {
     position: fixed;
